@@ -11,6 +11,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include "matchings.h"
+#include "csv_util.h"
 
 
 // Extract 7x7 feature vector from the center of the image, make it into a 1D vector
@@ -44,7 +45,7 @@ std::vector<float> extract7x7FeatureVector(const cv::Mat &image) {
     for (int i = 0; i < region.rows; ++i) {
         for (int j = 0; j < region.cols; ++j) {
             for (int c = 0; c < region.channels(); ++c) {
-                // 直接将uchar值转换为float
+                // Add the pixel value to the feature vector
                 featureVector.push_back(static_cast<float>(region.at<cv::Vec3b>(i, j)[c]));
             }
         }
@@ -59,7 +60,7 @@ float computeSSD(const std::vector<float>& vec1, const std::vector<float>& vec2)
     if (vec1.size() != vec2.size()) {
         throw std::runtime_error("Feature vectors must be of the same size");
     }
-
+    // ssd = sum of squared differences
     float ssd = 0.0;
 
     // Compute the sum of squared differences
@@ -70,3 +71,4 @@ float computeSSD(const std::vector<float>& vec1, const std::vector<float>& vec2)
 
     return ssd;
 }
+

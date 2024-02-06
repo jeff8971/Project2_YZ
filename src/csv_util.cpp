@@ -16,6 +16,7 @@ The function returns a std::vector of char* for the filenames and a 2D std::vect
 #include <vector>
 #include "opencv2/opencv.hpp"
 
+
 /*
   reads a string from a CSV file. the 0-terminated string is returned in the char array os.
 
