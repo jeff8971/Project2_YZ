@@ -16,7 +16,7 @@
 
 int main(int argc, char* argv[]){
     // N default is 3
-    int N = 3;
+    int N = 4;
     // Check the number of arguments
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " <target_image_name> <directory_of_images> <N>" << std::endl;
@@ -88,14 +88,15 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
 
-
+    // Sort the image-distance pairs by distance
     std::sort (image_distance_pairs.begin(), image_distance_pairs.end(), 
         [](const std::pair<std::string, float> &a, const std::pair<std::string, float> &b) -> bool {
             return a.second < b.second;
         }
     );
 
-    for (int i = 0; i < N; i++) {
+    // Output the top N images and their distances
+    for (int i = 0; i < (N + 1); i++) {
         std::cout << "Image: " << image_distance_pairs[i].first << " Distance: " << image_distance_pairs[i].second << std::endl;
     }
 
