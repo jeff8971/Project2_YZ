@@ -14,7 +14,7 @@ The function returns a std::vector of char* for the filenames and a 2D std::vect
 #include <cstdio>
 #include <cstring>
 #include <vector>
-#include "opencv2/opencv.hpp"
+#include "csv_util.h"
 
 
 /*
@@ -134,7 +134,7 @@ int append_image_data_csv( char *filename, char *image_filename, std::vector<flo
   std::fwrite(buffer, sizeof(char), strlen(buffer), fp );
   for(int i=0;i<image_data.size();i++) {
     char tmp[256];
-    sprintf(tmp, ",%.4f", image_data[i] );
+    snprintf(tmp, sizeof(tmp), ",%.4f", image_data[i]); // change sprintf -> snprintf
     std::fwrite(tmp, sizeof(char), strlen(tmp), fp );
   }
       

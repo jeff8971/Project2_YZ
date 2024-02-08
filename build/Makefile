@@ -129,6 +129,30 @@ Project2_YZ/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/build
 .PHONY : Project2_YZ/fast
 
+src/extractImgFeature2csv.o: src/extractImgFeature2csv.cpp.o
+.PHONY : src/extractImgFeature2csv.o
+
+# target to build an object file
+src/extractImgFeature2csv.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/extractImgFeature2csv.cpp.o
+.PHONY : src/extractImgFeature2csv.cpp.o
+
+src/extractImgFeature2csv.i: src/extractImgFeature2csv.cpp.i
+.PHONY : src/extractImgFeature2csv.i
+
+# target to preprocess a source file
+src/extractImgFeature2csv.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/extractImgFeature2csv.cpp.i
+.PHONY : src/extractImgFeature2csv.cpp.i
+
+src/extractImgFeature2csv.s: src/extractImgFeature2csv.cpp.s
+.PHONY : src/extractImgFeature2csv.s
+
+# target to generate assembly for a file
+src/extractImgFeature2csv.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/extractImgFeature2csv.cpp.s
+.PHONY : src/extractImgFeature2csv.cpp.s
+
 src/matchings.o: src/matchings.cpp.o
 .PHONY : src/matchings.o
 
@@ -153,30 +177,6 @@ src/matchings.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/matchings.cpp.s
 .PHONY : src/matchings.cpp.s
 
-src/readfiles-1.o: src/readfiles-1.cpp.o
-.PHONY : src/readfiles-1.o
-
-# target to build an object file
-src/readfiles-1.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/readfiles-1.cpp.o
-.PHONY : src/readfiles-1.cpp.o
-
-src/readfiles-1.i: src/readfiles-1.cpp.i
-.PHONY : src/readfiles-1.i
-
-# target to preprocess a source file
-src/readfiles-1.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/readfiles-1.cpp.i
-.PHONY : src/readfiles-1.cpp.i
-
-src/readfiles-1.s: src/readfiles-1.cpp.s
-.PHONY : src/readfiles-1.s
-
-# target to generate assembly for a file
-src/readfiles-1.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Project2_YZ.dir/build.make CMakeFiles/Project2_YZ.dir/src/readfiles-1.cpp.s
-.PHONY : src/readfiles-1.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Project2_YZ"
+	@echo "... src/extractImgFeature2csv.o"
+	@echo "... src/extractImgFeature2csv.i"
+	@echo "... src/extractImgFeature2csv.s"
 	@echo "... src/matchings.o"
 	@echo "... src/matchings.i"
 	@echo "... src/matchings.s"
-	@echo "... src/readfiles-1.o"
-	@echo "... src/readfiles-1.i"
-	@echo "... src/readfiles-1.s"
 .PHONY : help
 
 

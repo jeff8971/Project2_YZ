@@ -10,6 +10,8 @@
 #ifndef CVS_UTIL_H
 #define CVS_UTIL_H
 
+#include <vector>
+
 /*
   Given a filename, and image filename, and the image features, by
   default the function will append a line of data to the CSV format
