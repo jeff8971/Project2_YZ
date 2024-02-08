@@ -11,7 +11,9 @@
 #include "matchings.h"
 #include <vector>
 
-#define IMAGE_PATH "/Users/jeff/Desktop/Project2_YZ/olympus"
+#define IMAGE_DIRECTORY "/Users/jeff/Desktop/Project2_YZ/olympus"
+#define IMAGE_DATA_CSV "/Users/jeff/Desktop/Project2_YZ/bin/image_data.csv"
+
 
 int main(int argc, char* argv[]){
 
