@@ -54,6 +54,7 @@ std::vector<float> extract7x7FeatureVector(const cv::Mat &image) {
     return featureVector;
 }
 
+
 // Compute the distance metric (sum of squared differences) between two feature vectors
 float computeSSD(const std::vector<float>& vec1, const std::vector<float>& vec2) {
     // Check if vectors are of the same size

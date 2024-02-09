@@ -17,16 +17,17 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 # Can automatically find and configure OpenCV or other libraries if needed
 find_package(OpenCV REQUIRED)
 
-# Add both main.cpp and matchings.cpp to the executable
-add_executable(Project2_YZ ./src/extractImgFeature2csv.cpp ./src/matchings.cpp)
-# test
-# add_executable(test ./src/test.cpp ./src/csv_util.cpp)
-
+# Add the first executable that uses extractFeature2csv.cpp and other necessary source files
+add_executable(extractFeature ./src/extractFeature2csv.cpp ./src/matchings.cpp ./src/csv_util.cpp)
 
 # Link OpenCV libraries
-target_link_libraries(Project2_YZ ${OpenCV_LIBS})
-# test
-# target_link_libraries(test ${OpenCV_LIBS})
+target_link_libraries(extractFeature ${OpenCV_LIBS})
+
+# Add the second executable that uses matchings.cpp and other necessary source files
+add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_util.cpp)
+
+# Link OpenCV libraries with the second executable
+target_link_libraries(matching ${OpenCV_LIBS})
 
 # Ensure the OpenCV include directories are available to all targets
 include_directories(${OpenCV_INCLUDE_DIRS})
