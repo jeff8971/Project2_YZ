@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
     // method is the first argument
-    std::string method = std::string(argv[1]);
+    std::string method = argv[1];
     if (method != "b" && method != "h" && method != "m" && method != "t" && method != "c") {
         std::cerr << "Error: invalid method" << std::endl;
         Menu();
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
     }
 
     // Set the directory path from the command line, 2nd argument
-    std::string directory_of_images = std::string(argv[2]);
+    std::string directory_of_images = argv[2];
 
     // Set the csv file name
     std::string csvFile;

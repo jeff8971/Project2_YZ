@@ -24,10 +24,10 @@ add_executable(extractFeature ./src/extractFeature2csv.cpp ./src/matchings.cpp .
 target_link_libraries(extractFeature ${OpenCV_LIBS})
 
 # Add the second executable that uses matchings.cpp and other necessary source files
-#add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_util.cpp)
+add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_util.cpp)
 
 # Link OpenCV libraries with the second executable
-#target_link_libraries(matching ${OpenCV_LIBS})
+target_link_libraries(matching ${OpenCV_LIBS})
 
 # Ensure the OpenCV include directories are available to all targets
 include_directories(${OpenCV_INCLUDE_DIRS})

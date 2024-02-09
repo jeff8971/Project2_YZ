@@ -129,12 +129,50 @@ extractFeature/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/build
 .PHONY : extractFeature/fast
 
+#=============================================================================
+# Target rules for targets named matching
+
+# Build rule for target.
+matching: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 matching
+.PHONY : matching
+
+# fast build rule for target.
+matching/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/build
+.PHONY : matching/fast
+
+src/csv2matching.o: src/csv2matching.cpp.o
+.PHONY : src/csv2matching.o
+
+# target to build an object file
+src/csv2matching.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv2matching.cpp.o
+.PHONY : src/csv2matching.cpp.o
+
+src/csv2matching.i: src/csv2matching.cpp.i
+.PHONY : src/csv2matching.i
+
+# target to preprocess a source file
+src/csv2matching.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv2matching.cpp.i
+.PHONY : src/csv2matching.cpp.i
+
+src/csv2matching.s: src/csv2matching.cpp.s
+.PHONY : src/csv2matching.s
+
+# target to generate assembly for a file
+src/csv2matching.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv2matching.cpp.s
+.PHONY : src/csv2matching.cpp.s
+
 src/csv_util.o: src/csv_util.cpp.o
 .PHONY : src/csv_util.o
 
 # target to build an object file
 src/csv_util.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.o
 .PHONY : src/csv_util.cpp.o
 
 src/csv_util.i: src/csv_util.cpp.i
@@ -143,6 +181,7 @@ src/csv_util.i: src/csv_util.cpp.i
 # target to preprocess a source file
 src/csv_util.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.i
 .PHONY : src/csv_util.cpp.i
 
 src/csv_util.s: src/csv_util.cpp.s
@@ -151,6 +190,7 @@ src/csv_util.s: src/csv_util.cpp.s
 # target to generate assembly for a file
 src/csv_util.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.s
 .PHONY : src/csv_util.cpp.s
 
 src/extractFeature2csv.o: src/extractFeature2csv.cpp.o
@@ -183,6 +223,7 @@ src/matchings.o: src/matchings.cpp.o
 # target to build an object file
 src/matchings.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.o
 .PHONY : src/matchings.cpp.o
 
 src/matchings.i: src/matchings.cpp.i
@@ -191,6 +232,7 @@ src/matchings.i: src/matchings.cpp.i
 # target to preprocess a source file
 src/matchings.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.i
 .PHONY : src/matchings.cpp.i
 
 src/matchings.s: src/matchings.cpp.s
@@ -199,6 +241,7 @@ src/matchings.s: src/matchings.cpp.s
 # target to generate assembly for a file
 src/matchings.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.s
 .PHONY : src/matchings.cpp.s
 
 # Help Target
@@ -210,6 +253,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... extractFeature"
+	@echo "... matching"
+	@echo "... src/csv2matching.o"
+	@echo "... src/csv2matching.i"
+	@echo "... src/csv2matching.s"
 	@echo "... src/csv_util.o"
 	@echo "... src/csv_util.i"
 	@echo "... src/csv_util.s"
