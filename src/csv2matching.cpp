@@ -153,8 +153,10 @@ int main(int argc, char* argv[]) {
         std::sort(distances.begin(), distances.end());
     }
 
-    std::cout << "Top " << N << " Matches (first is target image itself, 0 to confirm):" << std::endl;
-    for (int i = 0; i < (N + 1) && i < distances.size(); i++) {
+    std::cout << "Top " << N << " Matches: " << std::endl;
+    // Start loop from 1 to skip the target image, assuming it's the first match
+    int matchesToShow = N + 1; // Increase by one to account for skipping the target image
+    for (int i = 1; i < matchesToShow && i < distances.size(); i++) {
         std::cout << distances[i].second << " with distance: " << distances[i].first << std::endl;
     }
 
