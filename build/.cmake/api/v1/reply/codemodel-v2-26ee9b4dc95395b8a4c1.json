@@ -15,8 +15,7 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0,
-						1
+						0
 					]
 				}
 			],
@@ -31,8 +30,7 @@
 					"name" : "Project2_YZ",
 					"targetIndexes" : 
 					[
-						0,
-						1
+						0
 					]
 				}
 			],
@@ -43,13 +41,6 @@
 					"id" : "extractFeature::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-extractFeature-Debug-fcaedc3b51a3d289e3fb.json",
 					"name" : "extractFeature",
-					"projectIndex" : 0
-				},
-				{
-					"directoryIndex" : 0,
-					"id" : "matching::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-matching-Debug-36e951b631c2de9e5d2a.json",
-					"name" : "matching",
 					"projectIndex" : 0
 				}
 			]

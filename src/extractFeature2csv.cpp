@@ -29,7 +29,6 @@ void Menu(){
 int main(int argc, char* argv[]){
     // Check the number of arguments
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " <method> <directory_of_images>" << std::endl;
         Menu();
         return EXIT_FAILURE;
     }
@@ -41,22 +40,21 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
 
-    // Set the directory path from the command line, 2nd and 3rd argument
-    std::string method = std::string(argv[1]);
+    // Set the directory path from the command line, 2nd argument
     std::string directory_of_images = std::string(argv[2]);
 
     // Set the csv file name
     std::string csvFile;
     if (method == "b") {
-        csvFile = "/bin/image_features_baseline.csv";
+        csvFile = "image_features_baseline.csv";
     } else if (method == "h") {
-        csvFile = "/bin/image_features_histogram.csv";
+        csvFile = "image_features_histogram.csv";
     } else if (method == "m") {
-        csvFile = "/bin/image_features_multi_histogram.csv";
+        csvFile = "image_features_multi_histogram.csv";
     } else if (method == "t") {
-        csvFile = "/bin/image_features_texture.csv";
+        csvFile = "image_features_texture.csv";
     } else if (method == "c") {
-        csvFile = "/bin/image_features_color.csv";
+        csvFile = "image_features_color.csv";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -91,6 +89,7 @@ int main(int argc, char* argv[]){
 
             if (method == "b") {
                 std::vector<float> feature = extract7x7FeatureVector(img);
+                // int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 if (error) {
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
