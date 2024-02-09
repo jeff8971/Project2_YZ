@@ -14,6 +14,7 @@
 #include <opencv2/opencv.hpp>
 #include "matchings.h"
 
+
 int main(int argc, char* argv[]){
     // N default is 3
     int N = 4;
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]){
     }
     std::cout << "N is set to " << N << std::endl;
 
-    const std::string PROJECT_DIRECTORY = "/Users/jeff/Desktop/Project2_YZ";
+    // const std::string PROJECT_DIRECTORY = "/Users/jeff/Desktop/Project2_YZ";
     // const std::string IMAGE_DIRECTORY_NAME = "/Users/jeff/Desktop/Project2_YZ/olympus";
     const std::string IMAGE_CSV_FILE = "/bin/image_features.csv";
 
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]){
     // Extract the feature vector from the target image
     std::vector<float> target_feature = extract7x7FeatureVector(target_image);
     
-
+    // Read the images from the directory
     std::vector<std::pair<std::string, float>> image_distance_pairs;
     DIR *dir;
     struct dirent* ent;
@@ -100,8 +101,6 @@ int main(int argc, char* argv[]){
         std::cout << "Image: " << image_distance_pairs[i].first << " Distance: " << image_distance_pairs[i].second << std::endl;
     }
 
-
     return 0;
-  
 
 }
