@@ -16,7 +16,7 @@
 
 
 void Menu(){
-    printf("Usage: ./extractFeature <method> <target_image_name> <directory_of_images> <Top N>\n");
+    printf("Usage: ./extractFeature <method> <directory_of_images>\n");
     printf("method:\n");
     printf("  b: use the Baseline method to extract the feature\n");
     printf("  h: use the Histogram method to extract the feature\n");
@@ -26,10 +26,9 @@ void Menu(){
 }
 
 int main(int argc, char* argv[]){
-
     // Check the number of arguments
     if (argc < 4) {
-        std::cerr << "Usage: " << argv[0] << " <method> <target_image_name> <directory_of_images> <Top N>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <method> <directory_of_images>" << std::endl;
         Menu();
         return EXIT_FAILURE;
     }
@@ -57,18 +56,19 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
 
-    
+
     // Set the csv file name
+    std::string csvFile;
     if (method == "b") {
-        const std::string IMAGE_CSV_FILE = "/bin/image_features_baseline.csv";
+        csvFile = "/bin/image_features_baseline.csv";
     } else if (method == "h") {
-        const std::string IMAGE_CSV_FILE = "/bin/image_features_histogram.csv";
+        csvFile = "/bin/image_features_histogram.csv";
     } else if (method == "m") {
-        const std::string IMAGE_CSV_FILE = "/bin/image_features_multi_histogram.csv";
+        csvFile = "/bin/image_features_multi_histogram.csv";
     } else if (method == "t") {
-        const std::string IMAGE_CSV_FILE = "/bin/image_features_texture.csv";
+        csvFile = "/bin/image_features_texture.csv";
     } else if (method == "c") {
-        const std::string IMAGE_CSV_FILE = "/bin/image_features_color.csv";
+        csvFile = "/bin/image_features_color.csv";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -79,10 +79,10 @@ int main(int argc, char* argv[]){
     std::string target_image_directory_path = image_directory_path + "/" + target_image_name;
 
 
-    std::string filename = IMAGE_CSV_FILE;
+
 
     // Delete the existing file 
-    std::remove(filename.c_str());
+    std::remove(csvFile.c_str());
 
     // Read the target image
     cv::Mat target_image = cv::imread(target_image_directory_path, cv::IMREAD_COLOR);
