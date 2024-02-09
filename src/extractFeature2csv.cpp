@@ -60,6 +60,13 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
 
+    // delete the existing csv file
+    if (std::remove(csvFile.c_str()) == 0) {
+        std::cout << "Existing CSV file deleted successfully." << std::endl;
+    } else {
+        // if the file does not exist
+        std::cout << "No existing CSV file to delete or deletion failed." << std::endl;
+    }
     
     // Read the images from the directory
     std::vector<std::pair<std::string, float>> image_distance_pairs;
@@ -87,16 +94,17 @@ int main(int argc, char* argv[]){
                 continue;
             }
 
+            // Extract the feature vector from the image from specified method
             if (method == "b") {
+                // extract the feature vector from the all the images
                 std::vector<float> feature = extract7x7FeatureVector(img);
-                // int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
+                // write the feature to the csv file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 if (error) {
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
             }
-
         }
         closedir(dir);
     } else {
