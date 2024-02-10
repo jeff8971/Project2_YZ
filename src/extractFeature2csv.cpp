@@ -118,8 +118,7 @@ int main(int argc, char* argv[]){
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            }
-            else if (method == "h3") {
+            } else if (method == "h3") {
                 // Extract RGB 3D Color Histogram features
                 std::vector<float> feature = calculateRGB_3DChromaHistogram(img, BINS_3D); // 8 bins per channel as an example
                 // Write the features to the CSV file
@@ -128,11 +127,9 @@ int main(int argc, char* argv[]){
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            }
-            /*
-            else if (method == "m") {
+            } else if (method == "m") {
                 // Extract Multi-RG Chroma Histogram features
-                std::vector<float> feature = calculateMultiRGChromaHistogram(img, 8); // 8 bins per channel as an example
+                std::vector<float> feature = calculateMultiPartRGBHistogram(img, BINS_3D); // 8 bins per channel as an example
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 if (error) {
@@ -140,6 +137,7 @@ int main(int argc, char* argv[]){
                     return EXIT_FAILURE;
                 }
             }
+            /*
             else if (method == "t") {
                 // Extract Texture features
                 std::vector<float> feature = calculateTextureFeatureVector(img);

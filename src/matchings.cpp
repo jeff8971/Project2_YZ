@@ -149,3 +149,51 @@ float computeHistogramIntersection(const std::vector<float>& vec1, const std::ve
     }
     return intersection;
 }
+
+// Task 3: Multi-histogram matching
+// Extract the multi-channel histogram feature vector from an image
+// Divided the image into 2 parts, top and bottom
+std::vector<float> calculateMultiPartRGBHistogram(const cv::Mat& image, int binsPerChannel) {
+    // Divide the image into top and bottom halves
+    cv::Rect topHalf(0, 0, image.cols, image.rows / 2);
+    cv::Rect bottomHalf(0, image.rows / 2, image.cols, image.rows / 2);
+
+    cv::Mat topPart = image(topHalf);
+    cv::Mat bottomPart = image(bottomHalf);
+
+    // Calculate histograms for each part
+    std::vector<float> topFeatureVector = calculateRGB_3DChromaHistogram(topPart, binsPerChannel);
+    std::vector<float> bottomFeatureVector = calculateRGB_3DChromaHistogram(bottomPart, binsPerChannel);
+
+    // Combine the two histograms into a single feature vector
+    topFeatureVector.insert(topFeatureVector.end(), bottomFeatureVector.begin(), bottomFeatureVector.end());
+
+    return topFeatureVector;
+}
+
+// Function to compute the histogram intersection distance between two vectors
+float combinedHistogramIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2, size_t splitPoint) {
+    // Assumes vec1 and vec2 are combined histograms from two parts
+    // splitPoint is the index where the second histogram starts in the combined vector
+
+    // validate the vec1 and vec2 size
+    if (vec1.size() != vec2.size()) {
+        throw std::runtime_error("Feature vectors must be of the same size");
+    }
+    // validate the split point
+    if (splitPoint >= vec1.size() || splitPoint == 0) {
+        throw std::runtime_error("Split point must be within the range");
+    }
+
+    // Calculate intersection for each part
+    float intersectionTop = computeHistogramIntersection(std::vector<float>(vec1.begin(), vec1.begin() + splitPoint), 
+                                                         std::vector<float>(vec2.begin(), vec2.begin() + splitPoint));
+    float intersectionBottom = computeHistogramIntersection(std::vector<float>(vec1.begin() + splitPoint, vec1.end()), 
+                                                            std::vector<float>(vec2.begin() + splitPoint, vec2.end()));
+
+    // Combine the intersections (example: simple average)
+    return (intersectionTop + intersectionBottom) / 2.0f;
+}
+
+
+

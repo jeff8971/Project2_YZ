@@ -8,6 +8,7 @@
 
 #define BINS_2D 16
 #define BINS_3D 8
+#define SPLIT_POINT (BINS_3D * BINS_3D * BINS_3D)
 
 
 // Task 1: baseline matching
@@ -24,5 +25,10 @@ std::vector<float> calculateRGB_3DChromaHistogram(const cv::Mat& image, int bins
 // Function to compute the histogram intersection distance between two vectors
 float computeHistogramIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2);
 
-
+// Task 3: Multi-histogram matching
+// Extract the multi-channel histogram feature vector from an image
+// Divided the image into 2 parts, top and bottom
+std::vector<float> calculateMultiPartRGBHistogram(const cv::Mat& image, int binsPerChannel);
+// Function to compute the histogram intersection distance between two vectors
+float combinedHistogramIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2, size_t splitPoint);
 #endif

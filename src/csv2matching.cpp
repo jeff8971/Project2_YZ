@@ -98,6 +98,8 @@ int main(int argc, char* argv[]) {
         target_features = calculateRG_2DChromaHistogram(target_image, BINS_2D);
     } else if (method == "h3"){
         target_features = calculateRGB_3DChromaHistogram(target_image, BINS_3D);
+    } else if (method == "m") {
+    target_features = calculateMultiPartRGBHistogram(target_image, BINS_3D); // Multi-histogram method
     }
     /*
     else if (method == "m"){
@@ -136,6 +138,16 @@ int main(int argc, char* argv[]) {
             float distance = computeHistogramIntersection(target_features, data[i]);
             distances.emplace_back(distance, std::string(filenames[i]));
         }
+    } else if (method == "m"){
+        // Compute distances using combined histogram intersection
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = combinedHistogramIntersection(target_features, data[i], SPLIT_POINT);
+            // Store the inverted distance for consistency with other methods
+            distances.emplace_back(1.0f - distance, std::string(filenames[i]));
+        }
+    } else {
+        std::cerr << "Error: invalid method" << std::endl;
+        return EXIT_FAILURE;
     }
 
     // Clean up dynamically allocated filenames
