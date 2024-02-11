@@ -22,12 +22,11 @@
 void Menu(){
     printf("Usage: ./matching <method> <target_image_name> <Top N>\n");
     printf("method:\n");
-    printf("  b: use the Baseline method to extract the feature\n");
-    printf("  h2: use the RG 2D Histogram method to extract the feature\n");
-    printf("  h3: use the RGB 3D Histogram method to extract the feature\n");
-    printf("  m: use the Multi-histogram method to extract the feature\n");
-    printf("  t: use the Texture method to extract the feature\n");
-    printf("  c: use the Color method to extract the feature\n");
+    printf("  b: use the Baseline method to matching\n");
+    printf("  h2: use the RG 2D Histogram method to matching\n");
+    printf("  h3: use the RGB 3D Histogram method to matching\n");
+    printf("  m: use the Multi-histogram method to matching\n");
+    printf("  tc: use the Texture and Color method to matching\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -38,7 +37,7 @@ int main(int argc, char* argv[]) {
 
     std::string method = argv[1];
     // Check if the method is valid
-    if (method != "b" && method != "h2" && method != "h3" && method != "m" && method != "t" && method != "c") {
+    if (method != "b" && method != "h2" && method != "h3" && method != "m" && method != "tc") {
         std::cerr << "Error: invalid method" << std::endl;
         Menu();
         return EXIT_FAILURE;
@@ -69,10 +68,8 @@ int main(int argc, char* argv[]) {
         methodFullname = "3D_histogram";
     } else if (method == "m") {
         methodFullname = "multi_histogram";
-    } else if (method == "t") {
-        methodFullname = "texture";
-    } else if (method == "c") {
-        methodFullname = "color";
+    } else if (method == "tc") {
+        methodFullname = "texturecolor";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -99,14 +96,10 @@ int main(int argc, char* argv[]) {
     } else if (method == "h3"){
         target_features = calculateRGB_3DChromaHistogram(target_image, BINS_3D);
     } else if (method == "m") {
-    target_features = calculateMultiPartRGBHistogram(target_image, BINS_3D); // Multi-histogram method
-    }
-    /*
-    else if (method == "m"){
-        std::vector<float> target_features = calculateMultiRGChromaHistogram(target_image, 8);
-    } else if (method == "t"){
-        std::vector<float> target_features = calculateTextureFeatureVector(target_image);
-    } else if (method == "c"){
+        target_features = calculateMultiPartRGBHistogram(target_image, BINS_3D); // Multi-histogram method
+    } else if (method == "tc"){
+        target_features = calculateCombinedFeatureVector(target_image, COLOR_BINS, TEXTURE_BINS);
+    }/* else if (method == "c"){
         std::vector<float> target_features = calculateColorFeatureVector(target_image);
     }*/ else {
         std::cerr << "Error: invalid method" << std::endl;
@@ -145,7 +138,18 @@ int main(int argc, char* argv[]) {
             // Store the inverted distance for consistency with other methods
             distances.emplace_back(1.0f - distance, std::string(filenames[i]));
         }
-    } else {
+    } else if (method == "tc"){
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = calculateColorTextureIntersection(target_features, data[i], SPLIT_POINT);
+            distances.emplace_back(distance, std::string(filenames[i]));
+        }
+    }/* else if (method == "c"){
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = computeHistogramIntersection(target_features, data[i]);
+            distances.emplace_back(distance, std::string(filenames[i]));
+        }
+    }*/
+    else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }

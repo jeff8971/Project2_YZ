@@ -196,4 +196,136 @@ float combinedHistogramIntersection(const std::vector<float>& vec1, const std::v
 }
 
 
+// Task 4: Texture and Color matching
+// SobelX and SobelY filter from Project 1
+// Sobel_X 3 x 3 function
+int sobelX3x3(const cv::Mat &src, cv::Mat &dst ){
+    if (src.empty()) {
+        return -1;
+    }
 
+    dst.create(src.size(), CV_16SC3);
+
+    // Horizontal kernel [-1, 0, 1]
+    for (int y = 1; y < src.rows - 1; y++) {
+        for (int x = 1; x < src.cols - 1; x++) {
+            cv::Vec3s sum(0, 0, 0);
+            for (int dx = -1; dx <= 1; dx++) {
+                cv::Vec3b pixel = src.at<cv::Vec3b>(y, x + dx);
+                for (int c = 0; c < 3; c++) {
+                    sum[c] += pixel[c] * dx;
+                }
+            }
+            dst.at<cv::Vec3s>(y, x) = sum;
+        }
+    }
+    return 0;
+}
+
+// Sobel_Y 3 x 3 function
+int sobelY3x3(const cv::Mat &src, cv::Mat &dst ){
+    if (src.empty()) {
+        return -1;
+    }
+
+    dst.create(src.size(), CV_16SC3);
+
+    // Vertical kernel [-1, 0, 1] transposed
+    for (int y = 1; y < src.rows - 1; y++) {
+        for (int x = 1; x < src.cols - 1; x++) {
+            cv::Vec3s sum(0, 0, 0);
+            for (int dy = -1; dy <= 1; dy++) {
+                cv::Vec3b pixel = src.at<cv::Vec3b>(y + dy, x);
+                for (int c = 0; c < 3; c++) {
+                    sum[c] += pixel[c] * dy;
+                }
+            }
+            dst.at<cv::Vec3s>(y, x) = sum;
+        }
+    }
+    return 0;
+}
+
+// generates a gradient magnitude image from the X and Y Sobel images
+int magnitude(const cv::Mat &sx, const cv::Mat &sy, cv::Mat &dst) {
+    if (sx.empty() || sy.empty() || sx.size() != sy.size() || sx.type() != sy.type()) {
+        return -1;
+    }
+
+    dst.create(sx.size(), CV_8UC3);
+
+    for (int y = 0; y < sx.rows; y++) {
+        for (int x = 0; x < sx.cols; x++) {
+            cv::Vec3b magnitudeColor;
+            for (int c = 0; c < 3; c++) {
+                float gradX = sx.at<cv::Vec3s>(y, x)[c];
+                float gradY = sy.at<cv::Vec3s>(y, x)[c];
+                magnitudeColor[c] = cv::saturate_cast<uchar>(std::sqrt(gradX * gradX + gradY * gradY));
+            }
+            dst.at<cv::Vec3b>(y, x) = magnitudeColor;
+        }
+    }
+    return 0;
+}
+
+
+// Extract the Texture Histogram from Sobel Magnitude Image
+std::vector<float> calculateTextureHistogram(const cv::Mat& magnitudeImage, int bins) {
+    cv::Mat hist;
+    int histSize[] = {bins};
+    float range[] = {0, 256};
+    const float* ranges[] = {range};
+    cv::calcHist(&magnitudeImage, 1, nullptr, cv::Mat(), hist, 1, histSize, ranges, true, false);
+    cv::normalize(hist, hist, 1, 0, cv::NORM_L1); // Normalize to make the sum of bins equal to 1
+
+    return std::vector<float>(hist.begin<float>(), hist.end<float>());
+}
+
+
+// Combine the color and texture histograms into a single feature vector, giving equal weight to both
+std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colorBinsPerChannel, int textureBins) {
+    // Calculate color histogram
+    std::vector<float> colorHist = calculateRGB_3DChromaHistogram(image, colorBinsPerChannel);
+    
+    // Convert the Sobel magnitude image to grayscale if it's not already
+    cv::Mat magnitudeGray, magnitudeImage;
+    if (magnitudeImage.channels() > 1) {
+        cv::cvtColor(magnitudeImage, magnitudeGray, cv::COLOR_BGR2GRAY);
+    } else {
+        magnitudeGray = magnitudeImage; // Use as-is if already single-channel
+    }
+
+    // Calculate Sobel magnitude image
+    cv::Mat sobelX, sobelY;
+    sobelX3x3(image, sobelX); // Assume these functions handle multi-channel images correctly
+    sobelY3x3(image, sobelY);
+    magnitude(sobelX, sobelY, magnitudeImage); // Results in a multi-channel magnitude image
+
+
+    // Calculate texture histogram from the grayscale magnitude image
+    std::vector<float> textureHist = calculateTextureHistogram(magnitudeGray, textureBins);
+
+    // Combine histograms
+    colorHist.insert(colorHist.end(), textureHist.begin(), textureHist.end());
+    return colorHist;
+}
+
+// Function to compute the histogram intersection distance
+// A simple approach: Euclidean distance separately for the color and texture parts
+// of the combined vector and then average these distances:
+float calculateColorTextureIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2, size_t splitPoint) {
+    // validate the vec1 and vec2 size
+    if (vec1.size() != vec2.size()) {
+        throw std::runtime_error("Feature vectors must be of the same size");
+    }
+    // validate the split point
+    if (splitPoint >= vec1.size() || splitPoint == 0) {
+        throw std::runtime_error("Split point must be within the range");
+    }
+    
+    float colorDistance = computeHistogramIntersection(std::vector<float>(vec1.begin(), vec1.begin() + splitPoint),
+                                                       std::vector<float>(vec2.begin(), vec2.begin() + splitPoint));
+    float textureDistance = computeHistogramIntersection(std::vector<float>(vec1.begin() + splitPoint, vec1.end()),
+                                                         std::vector<float>(vec2.begin() + splitPoint, vec2.end()));
+    return (colorDistance + textureDistance) / 2.0f; // Simple average
+}
