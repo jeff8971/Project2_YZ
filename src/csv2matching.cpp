@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
         }
     } else if (method == "tc"){
         for (size_t i = 0; i < data.size(); i++) {
-            float distance = calculateColorTextureIntersection(target_features, data[i], SPLIT_POINT);
+            float distance = combinedHistogramIntersection(target_features, data[i], SPLIT_POINT);
             distances.emplace_back(distance, std::string(filenames[i]));
         }
     }/* else if (method == "c"){
