@@ -282,7 +282,7 @@ std::vector<float> calculateTextureHistogram(const cv::Mat& magnitudeImage, int 
 
 
 // Combine the color and texture histograms into a single feature vector, giving equal weight to both
-std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colorBinsPerChannel, int textureBins) {
+std::vector<float> calculateColorTextureFeatureVector(const cv::Mat& image, int colorBinsPerChannel, int textureBins) {
     // Calculate color histogram
     std::vector<float> colorHist = calculateRGB_3DChromaHistogram(image, colorBinsPerChannel);
     
@@ -303,8 +303,67 @@ std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colo
     std::vector<float> textureHist = calculateTextureHistogram(grayImage, textureBins);
 
     // Combine histograms
-    std::vector<float> combinedFeatureVector = colorHist;
-    combinedFeatureVector.insert(combinedFeatureVector.end(), textureHist.begin(), textureHist.end());
+    std::vector<float> colorTextureFeatureVector = colorHist;
+    colorTextureFeatureVector.insert(colorTextureFeatureVector.end(), textureHist.begin(), textureHist.end());
 
-    return combinedFeatureVector;
+    return colorTextureFeatureVector;
 }
+
+// Extension: GLCM texture features
+std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int angle, int levels) {
+    cv::Mat gray;
+    if (src.channels() > 1) {
+        cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = src.clone();
+    }
+
+    // Downscale the image to reduce the number of gray levels for simplification
+    gray.convertTo(gray, CV_8U, levels / 255.0);
+
+    cv::Mat glcm(levels, levels, CV_32F, cv::Scalar(0));
+    int dx = 0;
+    int dy = 0;
+
+    // Define dx and dy based on angle
+    if (angle == 0) { dx = distance; dy = 0; } // Horizontal
+    else if (angle == 45) { dx = distance; dy = -distance; } // Diagonal 45 degree
+    else if (angle == 90) { dx = 0; dy = -distance; } // Vertical
+    else if (angle == 135) { dx = -distance; dy = -distance; } // Diagonal 135 degree
+
+    // Fill the GLCM
+    for (int y = 0; y < gray.rows; ++y) {
+        for (int x = 0; x < gray.cols; ++x) {
+            int pixelValue = gray.at<uchar>(y, x);
+            int neighborX = x + dx;
+            int neighborY = y + dy;
+
+            if (neighborX >= 0 && neighborX < gray.cols && neighborY >= 0 && neighborY < gray.rows) {
+                int neighborValue = gray.at<uchar>(neighborY, neighborX);
+                glcm.at<float>(pixelValue, neighborValue) += 1.0;
+            }
+        }
+    }
+
+    // Normalize the GLCM
+    cv::normalize(glcm, glcm, 1.0, 0.0, cv::NORM_L1);
+
+    // Extract features
+    float entropy = 0.0, contrast = 0.0, energy = 0.0, homogeneity = 0.0, maxProbability = 0.0;
+    for (int i = 0; i < levels; ++i) {
+        for (int j = 0; j < levels; ++j) {
+            float value = glcm.at<float>(i, j);
+            if (value > 0) {
+                entropy -= value * log2(value);
+            }
+            contrast += value * std::pow(i - j, 2);
+            energy += value * value;
+            homogeneity += value / (1 + std::abs(i - j));
+            maxProbability = std::max(maxProbability, value);
+        }
+    }
+
+    std::vector<float> features = {energy, entropy, contrast, homogeneity, maxProbability};
+    return features;
+}
+

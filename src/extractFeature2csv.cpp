@@ -25,7 +25,9 @@ void Menu(){
     printf("  h3: use the RGB 3D Histogram method to extract the feature\n");
     printf("  m: use the Multi-histogram method to extract the feature\n");
     printf("  tc: use the Texture and Color method to extract the feature\n");
+    printf("  glcm: use the GLCM to extract the feature\n");
 }
+
 
 int main(int argc, char* argv[]){
     // Check the number of arguments
@@ -35,7 +37,7 @@ int main(int argc, char* argv[]){
     }
     // method is the first argument
     std::string method = argv[1];
-    if (method != "b" && method != "h2" && method!= "h3" && method != "m" && method != "tc") {
+    if (method != "b" && method != "h2" && method!= "h3" && method != "m" && method != "tc" && method != "glcm") {
         std::cerr << "Error: invalid method" << std::endl;
         Menu();
         return EXIT_FAILURE;
@@ -56,7 +58,10 @@ int main(int argc, char* argv[]){
         csvFile += "multi_histogram.csv";
     } else if (method == "tc") {
         csvFile += "texturecolor.csv";
-    }  else {
+    } else if (method == "glcm") {
+        csvFile += "glcm.csv";
+    } 
+    else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }
@@ -105,8 +110,7 @@ int main(int argc, char* argv[]){
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            }
-            else if (method == "h2") {
+            } else if (method == "h2") {
                 // Extract RG Chroma Histogram features
                 std::vector<float> feature = calculateRG_2DChromaHistogram(img, BINS_2D); // 16 bins per channel as an example
                 // Write the features to the CSV file
@@ -135,24 +139,23 @@ int main(int argc, char* argv[]){
                 }
             } else if (method == "tc") {
                 // Extract Texture features
-                std::vector<float> feature = calculateCombinedFeatureVector(img, COLOR_BINS, TEXTURE_BINS);
+                std::vector<float> feature = calculateColorTextureFeatureVector(img, COLOR_BINS, TEXTURE_BINS);
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 if (error) {
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            }/*
-            else if (method == "c") {
+            } else if (method == "glcm") {
                 // Extract Color features
-                std::vector<float> feature = calculateColorFeatureVector(img);
+                std::vector<float> feature = calculateGLCMFeatures(img, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS);
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(full_file_path.c_str()), feature, false);
                 if (error) {
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            }*/
+            }
             else {
                 std::cerr << "Error: invalid method" << std::endl;
                 return EXIT_FAILURE;

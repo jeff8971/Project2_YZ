@@ -27,6 +27,7 @@ void Menu(){
     printf("  h3: use the RGB 3D Histogram method to matching\n");
     printf("  m: use the Multi-histogram method to matching\n");
     printf("  tc: use the Texture and Color method to matching\n");
+    printf("  glcm: use the GLCM to matching\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -37,7 +38,7 @@ int main(int argc, char* argv[]) {
 
     std::string method = argv[1];
     // Check if the method is valid
-    if (method != "b" && method != "h2" && method != "h3" && method != "m" && method != "tc") {
+    if (method != "b" && method != "h2" && method != "h3" && method != "m" && method != "tc" && method != "glcm") {
         std::cerr << "Error: invalid method" << std::endl;
         Menu();
         return EXIT_FAILURE;
@@ -70,6 +71,8 @@ int main(int argc, char* argv[]) {
         methodFullname = "multi_histogram";
     } else if (method == "tc") {
         methodFullname = "texturecolor";
+    } else if (method == "glcm") {
+        methodFullname = "glcm";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -98,10 +101,10 @@ int main(int argc, char* argv[]) {
     } else if (method == "m") {
         target_features = calculateMultiPartRGBHistogram(target_image, BINS_3D); // Multi-histogram method
     } else if (method == "tc"){
-        target_features = calculateCombinedFeatureVector(target_image, COLOR_BINS, TEXTURE_BINS);
-    }/* else if (method == "c"){
-        std::vector<float> target_features = calculateColorFeatureVector(target_image);
-    }*/ else {
+        target_features = calculateColorTextureFeatureVector(target_image, COLOR_BINS, TEXTURE_BINS);
+    } else if (method == "glcm"){
+        target_features = calculateGLCMFeatures(target_image, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS);
+    } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }
@@ -114,41 +117,41 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    // Compute distances between target image and each image in the CSV
-    std::vector<std::pair<float, std::string>> distances;
+    // Compute similarities between target image and each image in the CSV
+    std::vector<std::pair<float, std::string>> similarities;
     if (method == "b"){
         for (size_t i = 0; i < data.size(); i++) {
             float distance = computeSSD(target_features, data[i]);
-            distances.emplace_back(distance, std::string(filenames[i]));
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "h2"){
         for (size_t i = 0; i < data.size(); i++) {
             float distance = computeHistogramIntersection(target_features, data[i]);
-            distances.emplace_back(distance, std::string(filenames[i]));
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "h3"){
         for (size_t i = 0; i < data.size(); i++) {
             float distance = computeHistogramIntersection(target_features, data[i]);
-            distances.emplace_back(distance, std::string(filenames[i]));
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "m"){
-        // Compute distances using combined histogram intersection
+        // Compute similarities using combined histogram intersection
         for (size_t i = 0; i < data.size(); i++) {
             float distance = combinedHistogramIntersection(target_features, data[i], SPLIT_POINT);
             // Store the inverted distance for consistency with other methods
-            distances.emplace_back(distance, std::string(filenames[i]));
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "tc"){
         for (size_t i = 0; i < data.size(); i++) {
             float distance = combinedHistogramIntersection(target_features, data[i], SPLIT_POINT);
-            distances.emplace_back(distance, std::string(filenames[i]));
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
-    }/* else if (method == "c"){
+    } else if (method == "glcm"){
         for (size_t i = 0; i < data.size(); i++) {
-            float distance = computeHistogramIntersection(target_features, data[i]);
-            distances.emplace_back(distance, std::string(filenames[i]));
+            float distance = computeSSD(target_features, data[i]);
+            similarities.emplace_back(distance, std::string(filenames[i]));
         }
-    }*/
+    } 
     else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -161,19 +164,19 @@ int main(int argc, char* argv[]) {
     // by using histogram intersection, the higher the value, the more similar the images are
     if (method == "h2" || method == "h3" || method == "m" || method == "tc") {
         // Sort in descending order for histogram intersection
-        std::sort(distances.begin(), distances.end(), [](const std::pair<float, std::string>& a, const std::pair<float, std::string>& b) {
+        std::sort(similarities.begin(), similarities.end(), [](const std::pair<float, std::string>& a, const std::pair<float, std::string>& b) {
             return a.first > b.first; // For higher intersection values
         });
     } else {
         // Sort in ascending order for SSD, the lower, the more similar
-        std::sort(distances.begin(), distances.end());
+        std::sort(similarities.begin(), similarities.end());
     }
 
     std::cout << "Top " << N << " Matches: " << std::endl;
     // Start loop from 1 to skip the target image, assuming it's the first match
     int matchesToShow = N + 1; // Increase by one to account for skipping the target image
-    for (int i = 1; i < matchesToShow && i < distances.size(); i++) {
-        std::cout << distances[i].second << " with distance: " << distances[i].first << std::endl;
+    for (int i = 1; i < matchesToShow && i < similarities.size(); i++) {
+        std::cout << similarities[i].second << " with similarity: " << similarities[i].first << std::endl;
     }
 
     return 0;
