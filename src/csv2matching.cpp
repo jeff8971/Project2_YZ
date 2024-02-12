@@ -158,14 +158,14 @@ int main(int argc, char* argv[]) {
     for (char* fname : filenames) {
         delete[] fname;
     }
-
+    // by using histogram intersection, the higher the value, the more similar the images are
     if (method == "h2" || method == "h3" || method == "m" || method == "tc") {
         // Sort in descending order for histogram intersection
         std::sort(distances.begin(), distances.end(), [](const std::pair<float, std::string>& a, const std::pair<float, std::string>& b) {
             return a.first > b.first; // For higher intersection values
         });
     } else {
-        // Sort in ascending order for SSD
+        // Sort in ascending order for SSD, the lower, the more similar
         std::sort(distances.begin(), distances.end());
     }
 

@@ -56,7 +56,6 @@ std::vector<float> extract7x7FeatureVector(const cv::Mat &image) {
     return featureVector;
 }
 
-
 // Compute the distance metric (sum of squared differences) between two feature vectors
 float computeSSD(const std::vector<float>& vec1, const std::vector<float>& vec2) {
     // Check if vectors are of the same size
@@ -288,24 +287,24 @@ std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colo
     std::vector<float> colorHist = calculateRGB_3DChromaHistogram(image, colorBinsPerChannel);
     
     // Convert the Sobel magnitude image to grayscale if it's not already
-    cv::Mat magnitudeGray, magnitudeImage;
+    cv::Mat sobelX, sobelY, grayImage, magnitudeImage;
     if (magnitudeImage.channels() > 1) {
-        cv::cvtColor(magnitudeImage, magnitudeGray, cv::COLOR_BGR2GRAY);
+        cv::cvtColor(magnitudeImage, grayImage, cv::COLOR_BGR2GRAY);
     } else {
-        magnitudeGray = magnitudeImage; // Use as-is if already single-channel
+        grayImage = magnitudeImage; // Use as-is if already single-channel
     }
 
     // Calculate Sobel magnitude image
-    cv::Mat sobelX, sobelY;
     sobelX3x3(image, sobelX); // Assume these functions handle multi-channel images correctly
     sobelY3x3(image, sobelY);
     magnitude(sobelX, sobelY, magnitudeImage); // Results in a multi-channel magnitude image
 
-
     // Calculate texture histogram from the grayscale magnitude image
-    std::vector<float> textureHist = calculateTextureHistogram(magnitudeGray, textureBins);
+    std::vector<float> textureHist = calculateTextureHistogram(grayImage, textureBins);
 
     // Combine histograms
-    colorHist.insert(colorHist.end(), textureHist.begin(), textureHist.end());
-    return colorHist;
+    std::vector<float> combinedFeatureVector = colorHist;
+    combinedFeatureVector.insert(combinedFeatureVector.end(), textureHist.begin(), textureHist.end());
+
+    return combinedFeatureVector;
 }
