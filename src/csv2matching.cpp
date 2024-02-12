@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
         for (size_t i = 0; i < data.size(); i++) {
             float distance = combinedHistogramIntersection(target_features, data[i], SPLIT_POINT);
             // Store the inverted distance for consistency with other methods
-            distances.emplace_back(1.0f - distance, std::string(filenames[i]));
+            distances.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "tc"){
         for (size_t i = 0; i < data.size(); i++) {
@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
         delete[] fname;
     }
 
-    if (method == "h2" || method == "h3") {
+    if (method == "h2" || method == "h3" || method == "m" || method == "tc") {
         // Sort in descending order for histogram intersection
         std::sort(distances.begin(), distances.end(), [](const std::pair<float, std::string>& a, const std::pair<float, std::string>& b) {
             return a.first > b.first; // For higher intersection values

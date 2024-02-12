@@ -186,13 +186,13 @@ float combinedHistogramIntersection(const std::vector<float>& vec1, const std::v
     }
 
     // Calculate intersection for each part
-    float intersectionTop = computeHistogramIntersection(std::vector<float>(vec1.begin(), vec1.begin() + splitPoint), 
+    float intersection1 = computeHistogramIntersection(std::vector<float>(vec1.begin(), vec1.begin() + splitPoint), 
                                                          std::vector<float>(vec2.begin(), vec2.begin() + splitPoint));
-    float intersectionBottom = computeHistogramIntersection(std::vector<float>(vec1.begin() + splitPoint, vec1.end()), 
+    float intersection2 = computeHistogramIntersection(std::vector<float>(vec1.begin() + splitPoint, vec1.end()), 
                                                             std::vector<float>(vec2.begin() + splitPoint, vec2.end()));
 
     // Combine the intersections (example: simple average)
-    return (intersectionTop + intersectionBottom) / 2.0f;
+    return (intersection1 + intersection2) / 2.0f;
 }
 
 
@@ -308,24 +308,4 @@ std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colo
     // Combine histograms
     colorHist.insert(colorHist.end(), textureHist.begin(), textureHist.end());
     return colorHist;
-}
-
-// Function to compute the histogram intersection distance
-// A simple approach: Euclidean distance separately for the color and texture parts
-// of the combined vector and then average these distances:
-float calculateColorTextureIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2, size_t splitPoint) {
-    // validate the vec1 and vec2 size
-    if (vec1.size() != vec2.size()) {
-        throw std::runtime_error("Feature vectors must be of the same size");
-    }
-    // validate the split point
-    if (splitPoint >= vec1.size() || splitPoint == 0) {
-        throw std::runtime_error("Split point must be within the range");
-    }
-    
-    float colorDistance = computeHistogramIntersection(std::vector<float>(vec1.begin(), vec1.begin() + splitPoint),
-                                                       std::vector<float>(vec2.begin(), vec2.begin() + splitPoint));
-    float textureDistance = computeHistogramIntersection(std::vector<float>(vec1.begin() + splitPoint, vec1.end()),
-                                                         std::vector<float>(vec2.begin() + splitPoint, vec2.end()));
-    return (colorDistance + textureDistance) / 2.0f; // Simple average
 }

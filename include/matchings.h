@@ -48,11 +48,6 @@ int magnitude(const cv::Mat &sx, const cv::Mat &sy, cv::Mat &dst);
 std::vector<float> calculateTextureHistogram(const cv::Mat& magnitudeImage, int bins);
 // Combine the color and texture histograms into a single feature vector, giving equal weight to both
 std::vector<float> calculateCombinedFeatureVector(const cv::Mat& image, int colorBinsPerChannel, int textureBins);
-// Function to compute the histogram intersection distance
-// A simple approach: Euclidean distance separately for the color and texture parts
-// of the combined vector and then average these distances:
-float calculateColorTextureIntersection(const std::vector<float>& vec1, const std::vector<float>& vec2, size_t splitPoint);
-
 
 
 #endif
