@@ -310,23 +310,16 @@ std::vector<float> calculateColorTextureFeatureVector(const cv::Mat& image, int 
 }
 
 // Task 5: Deep Network Embeddings
-// Function to calculate cosine similarity between two vectors
+// Function to calculate the cosine similarity between two vectors.
 float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vector<float>& vec2) {
-    float dotProduct = 0.0;
-    float normVec1 = 0.0;
-    float normVec2 = 0.0;
-    for (size_t i = 0; i < vec1.size(); i++) {
+    float dotProduct = 0.0, normVec1 = 0.0, normVec2 = 0.0;
+    for (size_t i = 0; i < vec1.size(); ++i) {
         dotProduct += vec1[i] * vec2[i];
         normVec1 += vec1[i] * vec1[i];
         normVec2 += vec2[i] * vec2[i];
     }
-    normVec1 = sqrt(normVec1);
-    normVec2 = sqrt(normVec2);
-    return dotProduct / (normVec1 * normVec2);
+    return dotProduct / (std::sqrt(normVec1) * std::sqrt(normVec2));
 }
-
-
-
 
 
 /************************************************************************************************/
@@ -391,8 +384,8 @@ std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int a
 }
 
 
-// EXTENSION: Laws'filter method
-// Generate Laws' filter from two vectors
+// EXTENSION: Laws' Histogram method
+// Generate Laws' Histogram from two vectors
 cv::Mat generateLawsFilter(const std::vector<int>& v1, const std::vector<int>& v2) {
     cv::Mat filter(v1.size(), v2.size(), CV_32F);
     for (size_t i = 0; i < v1.size(); ++i) {
@@ -442,9 +435,38 @@ std::vector<float> calculateLawsTextureFeatures(const cv::Mat& src) {
     return features;
 }
 
-/************************************************************************************************/
 // EXTENSION: Gabor filter method
-/************************************************************************************************/
+std::vector<float> computeGaborFeatures(const cv::Mat& img) {
+    // Convert to grayscale if the image is not already
+    cv::Mat gray;
+    if (img.channels() == 3) {
+        cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = img.clone();
+    }
 
+    std::vector<float> features;
+    int kernel_size = 31;
+    double sigma = 2.5;
+    double gamma = 0.5;
+    double psi = CV_PI * 0.5; // Convert degrees to radians if needed
+    int num_thetas = 4; // Number of orientations
+    std::vector<double> lambdas = {10.0, 20.0, 30.0}; // Example wavelengths (λ) for multi-scale analysis
 
+    for (double lambda : lambdas) {
+        for (int i = 0; i < num_thetas; ++i) {
+            double theta = i * CV_PI / num_thetas; // Vary orientation
+            cv::Mat kernel = cv::getGaborKernel(cv::Size(kernel_size, kernel_size), sigma, theta, lambda, gamma, psi, CV_32F);
+            cv::Mat dest;
+            cv::filter2D(gray, dest, CV_32F, kernel);
 
+            // Compute simple statistical features from the filter response
+            cv::Scalar mean, stddev;
+            cv::meanStdDev(dest, mean, stddev);
+            features.push_back(static_cast<float>(mean[0]));
+            features.push_back(static_cast<float>(stddev[0]));
+        }
+    }
+
+    return features;
+}

@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/dcc_embedding.dir/src/csv_util.cpp.o.d"
   "CMakeFiles/dcc_embedding.dir/src/dnn_embedding.cpp.o"
   "CMakeFiles/dcc_embedding.dir/src/dnn_embedding.cpp.o.d"
+  "CMakeFiles/dcc_embedding.dir/src/matchings.cpp.o"
+  "CMakeFiles/dcc_embedding.dir/src/matchings.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

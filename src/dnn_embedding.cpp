@@ -13,25 +13,16 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
-#include "csv_util.h" 
+#include "csv_util.h"
+#include "matchings.h"
 
 
-// Function to calculate the cosine similarity between two vectors.
-float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vector<float>& vec2) {
-    float dotProduct = 0.0, normVec1 = 0.0, normVec2 = 0.0;
-    for (size_t i = 0; i < vec1.size(); ++i) {
-        dotProduct += vec1[i] * vec2[i];
-        normVec1 += vec1[i] * vec1[i];
-        normVec2 += vec2[i] * vec2[i];
-    }
-    return dotProduct / (std::sqrt(normVec1) * std::sqrt(normVec2));
-}
 
 // Main entry
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << "<target_image_name> <Top N>" << std::endl;
-        return -1;
+        return EXIT_FAILURE;
     }
 
     // Path to the CSV file containing the feature vectors.
@@ -49,7 +40,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::vector<float>> data;
     if (read_image_data_csv(const_cast<char*>(csvFilePath.c_str()), filenames, data, false) != 0) {
         std::cerr << "Error reading CSV file" << std::endl;
-        return -1;
+        return EXIT_FAILURE;
     }
 
     // Find the feature vector for the target image.
@@ -65,7 +56,7 @@ int main(int argc, char* argv[]) {
 
     if (!found) {
         std::cerr << "Target image not found in CSV" << std::endl;
-        return -1;
+        return EXIT_FAILURE;
     }
 
     // Calculate similarity and store results.

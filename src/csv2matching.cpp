@@ -29,6 +29,7 @@ void matchingMenu(){
     printf("  tc: use the Texture and Color method to matching\n");
     printf("  glcm: use the GLCM filter to matching\n");
     printf("  l: use the Laws' filter to matching\n");
+    printf("  gabor: use the Gabor filter to matching\n");
 }
 
 int main(int argc, char* argv[]) {
@@ -45,7 +46,8 @@ int main(int argc, char* argv[]) {
     && method != "m" 
     && method != "tc" 
     && method != "glcm"
-    && method != "l") {
+    && method != "l"
+    && method != "gabor") {
         std::cerr << "Error: invalid method" << std::endl;
         matchingMenu();
         return EXIT_FAILURE;
@@ -83,6 +85,8 @@ int main(int argc, char* argv[]) {
         methodFullname = "glcm";
     } else if (method == "l"){
         methodFullname = "laws";
+    } else if (method == "gabor"){
+        methodFullname = "gabor";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -129,6 +133,8 @@ int main(int argc, char* argv[]) {
         target_features = calculateGLCMFeatures(target_image, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS);
     } else if (method == "l"){
         target_features = calculateLawsTextureFeatures(target_image);
+    } else if (method == "gabor"){
+        target_features = computeGaborFeatures(target_image);
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -169,6 +175,11 @@ int main(int argc, char* argv[]) {
             similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "l"){
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = computeSSD(target_features, data[i]);
+            similarities.emplace_back(distance, std::string(filenames[i]));
+        }
+    } else if (method == "gabor"){
         for (size_t i = 0; i < data.size(); i++) {
             float distance = computeSSD(target_features, data[i]);
             similarities.emplace_back(distance, std::string(filenames[i]));

@@ -264,6 +264,7 @@ src/matchings.o: src/matchings.cpp.o
 src/matchings.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/matchings.cpp.o
 .PHONY : src/matchings.cpp.o
 
 src/matchings.i: src/matchings.cpp.i
@@ -273,6 +274,7 @@ src/matchings.i: src/matchings.cpp.i
 src/matchings.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/matchings.cpp.i
 .PHONY : src/matchings.cpp.i
 
 src/matchings.s: src/matchings.cpp.s
@@ -282,6 +284,7 @@ src/matchings.s: src/matchings.cpp.s
 src/matchings.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/matchings.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/matchings.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/matchings.cpp.s
 .PHONY : src/matchings.cpp.s
 
 # Help Target

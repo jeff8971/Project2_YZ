@@ -26,7 +26,8 @@ void extractMenu(){
     printf("  m: use the Multi-histogram method to extract the feature\n");
     printf("  tc: use the Texture and Color method to extract the feature\n");
     printf("  glcm: use the GLCM filter to extract the feature\n");
-    printf("  l: use the Laws' filter to extract the feature\n");
+    printf("  l: use the Laws' Histogram to extract the feature\n");
+    printf("  gabor: use the Gabor Histogram to extract the feature\n");
 }
 
 
@@ -44,7 +45,8 @@ int main(int argc, char* argv[]){
     && method != "m" 
     && method != "tc" 
     && method != "glcm"
-    && method != "l") {
+    && method != "l"
+    && method != "gabor") {
         std::cerr << "Error: invalid method" << std::endl;
         extractMenu();
         return EXIT_FAILURE;
@@ -69,6 +71,8 @@ int main(int argc, char* argv[]){
         csvFile += "glcm.csv";
     } else if (method == "l") {
         csvFile += "laws.csv";
+    } else if (method == "gabor"){
+        csvFile += "gabor.csv";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -112,11 +116,6 @@ int main(int argc, char* argv[]){
             if (method == "b") {
                 // extract the feature vector from the all the images
                 std::vector<float> feature = extract7x7FeatureVector(img);
-                // Inside the loop where you process each image file
-                //std::string full_file_path = directory_of_images + "/" + file_name;
-                // Use the helper function to extract just the file name
-                //std::string just_file_name = extractFileName(full_file_path);
-                // write the feature to the csv file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
                 if (error) {
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
@@ -176,10 +175,18 @@ int main(int argc, char* argv[]){
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
+            } else if (method == "gabor") {
+                std::vector<float> feature = computeGaborFeatures(img);
+                // Write the features to the CSV file
+                int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
+                if (error) {
+                    std::cerr << "Error: cannot append to the csv file" << std::endl;
+                    return EXIT_FAILURE;
+                }
             } else {
                 std::cerr << "Error: invalid method" << std::endl;
                 return EXIT_FAILURE;
-            }
+            } 
         }
         closedir(dir);
     } else {

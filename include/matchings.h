@@ -54,17 +54,16 @@ std::vector<float> calculateColorTextureFeatureVector(const cv::Mat& image, int 
 
 
 // Task 5: Deep Network Embeddings
-// Function to calculate cosine similarity between two vectors
+// Function to calculate the cosine similarity between two vectors.
 float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vector<float>& vec2);
-
 
 
 // EXTENSION: GLCM texture features
 std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int angle, int levels);
 // EXTENSION: Laws texture features
 std::vector<float> calculateLawsTextureFeatures(const cv::Mat& src);
-
-
+// EXTENSION: Gabor texture features
+std::vector<float> computeGaborFeatures(const cv::Mat& img);
 
 
 
