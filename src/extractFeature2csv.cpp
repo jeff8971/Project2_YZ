@@ -28,6 +28,7 @@ void extractMenu(){
     printf("  glcm: use the GLCM filter to extract the feature\n");
     printf("  l: use the Laws' Histogram to extract the feature\n");
     printf("  gabor: use the Gabor Histogram to extract the feature\n");
+    printf("  custom: use the custom method to extract the feature\n");
 }
 
 
@@ -46,7 +47,8 @@ int main(int argc, char* argv[]){
     && method != "tc" 
     && method != "glcm"
     && method != "l"
-    && method != "gabor") {
+    && method != "gabor"
+    && method != "custom") {
         std::cerr << "Error: invalid method" << std::endl;
         extractMenu();
         return EXIT_FAILURE;
@@ -73,6 +75,8 @@ int main(int argc, char* argv[]){
         csvFile += "laws.csv";
     } else if (method == "gabor"){
         csvFile += "gabor.csv";
+    } else if (method == "custom") {
+        csvFile += "custom.csv";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -177,6 +181,14 @@ int main(int argc, char* argv[]){
                 }
             } else if (method == "gabor") {
                 std::vector<float> feature = computeGaborFeatures(img);
+                // Write the features to the CSV file
+                int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
+                if (error) {
+                    std::cerr << "Error: cannot append to the csv file" << std::endl;
+                    return EXIT_FAILURE;
+                }
+            } else if (method == "custom") {
+                std::vector<float> feature = calculateCustomFeature(img);
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
                 if (error) {

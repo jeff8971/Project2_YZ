@@ -322,6 +322,35 @@ float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vecto
 }
 
 
+// Task 7: Custom Design
+// Calculate the custom feature vector from an image
+// Use a combination of Gabor features, edge histogram, Laws' texture features, and color texture features
+std::vector<float> calculateCustomFeature(const cv::Mat& img) {
+    // Convert the image to grayscale for certain feature calculations
+    cv::Mat grayImg;
+    if (img.channels() > 1) {
+        cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
+    } else {
+        grayImg = img.clone();
+    }
+
+    // Calculate features using the specified methods
+    std::vector<float> gaborFeatures = computeGaborFeatures(grayImg);
+    std::vector<float> lawsFeatures = calculateLawsTextureFeatures(grayImg);
+    std::vector<float> centralPatchFeatures = extract7x7FeatureVector(img);
+    std::vector<float> glcmFeatures = calculateGLCMFeatures(grayImg, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS); 
+
+    // Combine all features into a single vector
+    std::vector<float> combinedFeatures;
+    combinedFeatures.insert(combinedFeatures.end(), gaborFeatures.begin(), gaborFeatures.end());
+    combinedFeatures.insert(combinedFeatures.end(), lawsFeatures.begin(), lawsFeatures.end());
+    combinedFeatures.insert(combinedFeatures.end(), centralPatchFeatures.begin(), centralPatchFeatures.end());
+    combinedFeatures.insert(combinedFeatures.end(), glcmFeatures.begin(), glcmFeatures.end());
+
+    return combinedFeatures;
+}
+
+
 /************************************************************************************************/
 // EXTENSIONS
 /************************************************************************************************/
@@ -470,3 +499,5 @@ std::vector<float> computeGaborFeatures(const cv::Mat& img) {
 
     return features;
 }
+
+

@@ -11,6 +11,7 @@
 #define COLOR_BINS 8
 #define TEXTURE_BINS 8
 
+
 #define SPLIT_POINT (BINS_3D * BINS_3D * BINS_3D)
 
 #define GLCM_DISTANCE 1
@@ -57,6 +58,10 @@ std::vector<float> calculateColorTextureFeatureVector(const cv::Mat& image, int 
 // Function to calculate the cosine similarity between two vectors.
 float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vector<float>& vec2);
 
+// Task 7: Custom Design
+// Calculate the custom feature vector from an image
+// Use a combination of Gabor features, Laws, GLCM, and 7x7 center feature.
+std::vector<float> calculateCustomFeature(const cv::Mat& img);
 
 // EXTENSION: GLCM texture features
 std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int angle, int levels);
