@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project2_YZ",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "dnn_embedding::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dnn_embedding-Debug-282c8e35f29928b64939.json",
+					"name" : "dnn_embedding",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "extractFeature::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-extractFeature-Debug-df328d91cd9c8b34f2f2.json",
+					"name" : "extractFeature",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "matching::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-matching-Debug-d2f27c6e3c0a0600b90d.json",
+					"name" : "matching",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/jeff/Desktop/Project2_YZ/build",
+		"source" : "/Users/jeff/Desktop/Project2_YZ"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
