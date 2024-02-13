@@ -18,29 +18,36 @@
 #include "csv_util.h"
 
 
-// Menu for the user
-void Menu(){
-    printf("Usage: ./matching <method> <target_image_name> <Top N>\n");
+// matchingMenu for the user
+void matchingMenu(){
+    printf("Usage: ./matching <method> <path/target_image_name> <Top N>\n");
     printf("method:\n");
     printf("  b: use the Baseline method to matching\n");
     printf("  h2: use the RG 2D Histogram method to matching\n");
     printf("  h3: use the RGB 3D Histogram method to matching\n");
     printf("  m: use the Multi-histogram method to matching\n");
     printf("  tc: use the Texture and Color method to matching\n");
-    printf("  glcm: use the GLCM to matching\n");
+    printf("  glcm: use the GLCM filter to matching\n");
+    printf("  l: use the Laws' filter to matching\n");
 }
 
 int main(int argc, char* argv[]) {
     if (argc < 3) {
-        Menu();
+        matchingMenu();
         return EXIT_FAILURE;
     }
 
     std::string method = argv[1];
     // Check if the method is valid
-    if (method != "b" && method != "h2" && method != "h3" && method != "m" && method != "tc" && method != "glcm") {
+    if (method != "b" 
+    && method != "h2" 
+    && method != "h3" 
+    && method != "m" 
+    && method != "tc" 
+    && method != "glcm"
+    && method != "l") {
         std::cerr << "Error: invalid method" << std::endl;
-        Menu();
+        matchingMenu();
         return EXIT_FAILURE;
     }
 
@@ -61,6 +68,7 @@ int main(int argc, char* argv[]) {
 
     // Construct the full name of the method
     std::string methodFullname;
+    std::string embeddingCvsFile;
     if (method == "b") {
         methodFullname = "baseline";
     } else if (method == "h2") {
@@ -73,6 +81,8 @@ int main(int argc, char* argv[]) {
         methodFullname = "texturecolor";
     } else if (method == "glcm") {
         methodFullname = "glcm";
+    } else if (method == "l"){
+        methodFullname = "laws";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -82,6 +92,8 @@ int main(int argc, char* argv[]) {
 
     // Construct the CSV file path based on the method
     std::string csvFile = "/Users/jeff/Desktop/Project2_YZ/bin/image_features_" + methodFullname + ".csv";
+    std::cout << "CSV file is set to " << csvFile << std::endl;
+
 
     // Read the target image and extract its feature vector
     cv::Mat target_image = cv::imread(target_image_path, cv::IMREAD_COLOR);
@@ -91,7 +103,18 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
+    // Extract the target features, csv files and compare them
     std::vector<float> target_features;
+    std::vector<char*> filenames;
+    std::vector<std::vector<float>> data;
+
+    // Use the existing read_image_data_csv function to read the CSV file
+    if (read_image_data_csv(const_cast<char*>(csvFile.c_str()), filenames, data, false) != 0) {
+        std::cerr << "Failed to read image data from CSV" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // Extract the target features based on the method
     if (method == "b"){
         target_features = extract7x7FeatureVector(target_image);
     } else if (method == "h2"){
@@ -104,16 +127,10 @@ int main(int argc, char* argv[]) {
         target_features = calculateColorTextureFeatureVector(target_image, COLOR_BINS, TEXTURE_BINS);
     } else if (method == "glcm"){
         target_features = calculateGLCMFeatures(target_image, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS);
+    } else if (method == "l"){
+        target_features = calculateLawsTextureFeatures(target_image);
     } else {
         std::cerr << "Error: invalid method" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    // Use the existing read_image_data_csv function to read the CSV file
-    std::vector<char*> filenames;
-    std::vector<std::vector<float>> data;
-    if (read_image_data_csv(const_cast<char*>(csvFile.c_str()), filenames, data, 0) != 0) {
-        std::cerr << "Failed to read image data from CSV" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -151,8 +168,12 @@ int main(int argc, char* argv[]) {
             float distance = computeSSD(target_features, data[i]);
             similarities.emplace_back(distance, std::string(filenames[i]));
         }
-    } 
-    else {
+    } else if (method == "l"){
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = computeSSD(target_features, data[i]);
+            similarities.emplace_back(distance, std::string(filenames[i]));
+        }
+    } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }

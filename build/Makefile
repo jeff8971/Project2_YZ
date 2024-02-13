@@ -142,6 +142,19 @@ matching/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/build
 .PHONY : matching/fast
 
+#=============================================================================
+# Target rules for targets named dcc_embedding
+
+# Build rule for target.
+dcc_embedding: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 dcc_embedding
+.PHONY : dcc_embedding
+
+# fast build rule for target.
+dcc_embedding/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/build
+.PHONY : dcc_embedding/fast
+
 src/csv2matching.o: src/csv2matching.cpp.o
 .PHONY : src/csv2matching.o
 
@@ -173,6 +186,7 @@ src/csv_util.o: src/csv_util.cpp.o
 src/csv_util.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/csv_util.cpp.o
 .PHONY : src/csv_util.cpp.o
 
 src/csv_util.i: src/csv_util.cpp.i
@@ -182,6 +196,7 @@ src/csv_util.i: src/csv_util.cpp.i
 src/csv_util.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/csv_util.cpp.i
 .PHONY : src/csv_util.cpp.i
 
 src/csv_util.s: src/csv_util.cpp.s
@@ -191,7 +206,32 @@ src/csv_util.s: src/csv_util.cpp.s
 src/csv_util.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/csv_util.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/csv_util.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/csv_util.cpp.s
 .PHONY : src/csv_util.cpp.s
+
+src/dnn_embedding.o: src/dnn_embedding.cpp.o
+.PHONY : src/dnn_embedding.o
+
+# target to build an object file
+src/dnn_embedding.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/dnn_embedding.cpp.o
+.PHONY : src/dnn_embedding.cpp.o
+
+src/dnn_embedding.i: src/dnn_embedding.cpp.i
+.PHONY : src/dnn_embedding.i
+
+# target to preprocess a source file
+src/dnn_embedding.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/dnn_embedding.cpp.i
+.PHONY : src/dnn_embedding.cpp.i
+
+src/dnn_embedding.s: src/dnn_embedding.cpp.s
+.PHONY : src/dnn_embedding.s
+
+# target to generate assembly for a file
+src/dnn_embedding.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/dcc_embedding.dir/build.make CMakeFiles/dcc_embedding.dir/src/dnn_embedding.cpp.s
+.PHONY : src/dnn_embedding.cpp.s
 
 src/extractFeature2csv.o: src/extractFeature2csv.cpp.o
 .PHONY : src/extractFeature2csv.o
@@ -252,6 +292,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... dcc_embedding"
 	@echo "... extractFeature"
 	@echo "... matching"
 	@echo "... src/csv2matching.o"
@@ -260,6 +301,9 @@ help:
 	@echo "... src/csv_util.o"
 	@echo "... src/csv_util.i"
 	@echo "... src/csv_util.s"
+	@echo "... src/dnn_embedding.o"
+	@echo "... src/dnn_embedding.i"
+	@echo "... src/dnn_embedding.s"
 	@echo "... src/extractFeature2csv.o"
 	@echo "... src/extractFeature2csv.i"
 	@echo "... src/extractFeature2csv.s"

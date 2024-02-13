@@ -29,5 +29,12 @@ add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_uti
 # Link OpenCV libraries with the second executable
 target_link_libraries(matching ${OpenCV_LIBS})
 
+
+# Add the third executable that uses dnn_embedding.cpp and other necessary source files
+add_executable(dcc_embedding ./src/dnn_embedding.cpp ./src/csv_util.cpp)
+
+# Link OpenCV libraries with the third executable
+target_link_libraries(dcc_embedding ${OpenCV_LIBS})
+
 # Ensure the OpenCV include directories are available to all targets
 include_directories(${OpenCV_INCLUDE_DIRS})

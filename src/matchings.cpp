@@ -309,6 +309,29 @@ std::vector<float> calculateColorTextureFeatureVector(const cv::Mat& image, int 
     return colorTextureFeatureVector;
 }
 
+// Task 5: Deep Network Embeddings
+// Function to calculate cosine similarity between two vectors
+float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vector<float>& vec2) {
+    float dotProduct = 0.0;
+    float normVec1 = 0.0;
+    float normVec2 = 0.0;
+    for (size_t i = 0; i < vec1.size(); i++) {
+        dotProduct += vec1[i] * vec2[i];
+        normVec1 += vec1[i] * vec1[i];
+        normVec2 += vec2[i] * vec2[i];
+    }
+    normVec1 = sqrt(normVec1);
+    normVec2 = sqrt(normVec2);
+    return dotProduct / (normVec1 * normVec2);
+}
+
+
+
+
+
+/************************************************************************************************/
+// EXTENSIONS
+/************************************************************************************************/
 // Extension: GLCM texture features
 std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int angle, int levels) {
     cv::Mat gray;
@@ -366,4 +389,62 @@ std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int a
     std::vector<float> features = {energy, entropy, contrast, homogeneity, maxProbability};
     return features;
 }
+
+
+// EXTENSION: Laws'filter method
+// Generate Laws' filter from two vectors
+cv::Mat generateLawsFilter(const std::vector<int>& v1, const std::vector<int>& v2) {
+    cv::Mat filter(v1.size(), v2.size(), CV_32F);
+    for (size_t i = 0; i < v1.size(); ++i) {
+        for (size_t j = 0; j < v2.size(); ++j) {
+            filter.at<float>(i, j) = v1[i] * v2[j];
+        }
+    }
+    return filter;
+}
+
+// Apply Laws' filter and compute texture energy
+cv::Mat applyLawsFilter(const cv::Mat& src, const cv::Mat& filter) {
+    cv::Mat filtered, energyMap;
+    cv::filter2D(src, filtered, CV_32F, filter);
+    cv::pow(filtered, 2, energyMap); // Square to get energy
+    return energyMap;
+}
+
+// Calculate texture energy feature vector for an image using Laws' filters
+std::vector<float> calculateLawsTextureFeatures(const cv::Mat& src) {
+    // Defining Laws' vectors
+    const std::vector<int> L5 = {1, 4, 6, 4, 1};  // Level
+    const std::vector<int> E5 = {-1, -2, 0, 2, 1}; // Edge
+    const std::vector<int> S5 = {-1, 0, 2, 0, -1}; // Spot
+    const std::vector<int> W5 = {-1, 2, 0, -2, 1}; // Wave
+    const std::vector<int> R5 = {1, -4, 6, -4, 1}; // Ripple
+    
+    const std::vector<std::vector<int>> vectors = {L5, E5, S5, W5, R5};
+
+    cv::Mat gray;
+    // Convert to grayscale if the source image is not already grayscale
+    if (src.channels() > 1) {
+        cv::cvtColor(src, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = src;
+    }
+
+    std::vector<float> features;
+    for (size_t i = 0; i < vectors.size(); ++i) {
+        for (size_t j = 0; j < vectors.size(); ++j) {
+            cv::Mat filter = generateLawsFilter(vectors[i], vectors[j]);
+            cv::Mat energyMap = applyLawsFilter(gray, filter);
+            float energy = cv::sum(energyMap)[0];
+            features.push_back(energy);
+        }
+    }
+    return features;
+}
+
+/************************************************************************************************/
+// EXTENSION: Gabor filter method
+/************************************************************************************************/
+
+
 
