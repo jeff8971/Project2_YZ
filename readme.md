@@ -49,7 +49,7 @@ make
 After building, the project generates three executables for different tasks within the `bin/` directory:
 - `./extractFeature`: For extracting features from images and saving them to CSV.
 - `./matching`: For performing feature matching between images.
-- `./dcc_embedding`: For applying deep neural network embeddings for image retrieval.
+- `./dnn_embedding`: For applying deep neural network embeddings for image retrieval.
 
 
 ### Using `extractFeature`

@@ -42,9 +42,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "dcc_embedding::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-dcc_embedding-Debug-158d1138d140d6992d96.json",
-					"name" : "dcc_embedding",
+					"id" : "dnn_embedding::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dnn_embedding-Debug-aa6af847051e2122aaea.json",
+					"name" : "dnn_embedding",
 					"projectIndex" : 0
 				},
 				{

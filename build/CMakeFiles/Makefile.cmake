@@ -50,5 +50,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/extractFeature.dir/DependInfo.cmake"
   "CMakeFiles/matching.dir/DependInfo.cmake"
-  "CMakeFiles/dcc_embedding.dir/DependInfo.cmake"
+  "CMakeFiles/dnn_embedding.dir/DependInfo.cmake"
   )

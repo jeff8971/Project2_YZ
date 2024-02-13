@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/jeff/Desktop/Project2_YZ/bin/dcc_embedding"
+			"path" : "/Users/jeff/Desktop/Project2_YZ/bin/dnn_embedding"
 		}
 	],
 	"backtrace" : 1,
@@ -87,7 +87,7 @@
 			]
 		}
 	],
-	"id" : "dcc_embedding::@6890427a1f51a3e7e1df",
+	"id" : "dnn_embedding::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -382,8 +382,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "dcc_embedding",
-	"nameOnDisk" : "dcc_embedding",
+	"name" : "dnn_embedding",
+	"nameOnDisk" : "dnn_embedding",
 	"paths" : 
 	{
 		"build" : ".",
