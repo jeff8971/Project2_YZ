@@ -15,6 +15,7 @@
 #include "matchings.h"
 #include "csv_util.h"
 
+
 // Task 1: baseline matching
 // Extract 7x7 feature vector from the center of the image, make it into a 1D vector
 std::vector<float> extract7x7FeatureVector(const cv::Mat &image) {
@@ -499,5 +500,7 @@ std::vector<float> computeGaborFeatures(const cv::Mat& img) {
 
     return features;
 }
+
+
 
 

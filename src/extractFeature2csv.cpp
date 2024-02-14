@@ -14,6 +14,7 @@
 #include <opencv2/opencv.hpp>
 #include "matchings.h"
 #include "csv_util.h"
+#include "faceDetect.h"
 
 
 // Menu for the user
@@ -29,6 +30,7 @@ void extractMenu(){
     printf("  l: use the Laws' Histogram to extract the feature\n");
     printf("  gabor: use the Gabor Histogram to extract the feature\n");
     printf("  custom: use the custom method to extract the feature\n");
+    printf("  face: use the face detection method to extract the feature\n");
 }
 
 
@@ -48,7 +50,8 @@ int main(int argc, char* argv[]){
     && method != "glcm"
     && method != "l"
     && method != "gabor"
-    && method != "custom") {
+    && method != "custom"
+    && method != "face") {
         std::cerr << "Error: invalid method" << std::endl;
         extractMenu();
         return EXIT_FAILURE;
@@ -77,6 +80,8 @@ int main(int argc, char* argv[]){
         csvFile += "gabor.csv";
     } else if (method == "custom") {
         csvFile += "custom.csv";
+    } else if (method == "face") {
+        csvFile += "face.csv";
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -189,6 +194,14 @@ int main(int argc, char* argv[]){
                 }
             } else if (method == "custom") {
                 std::vector<float> feature = calculateCustomFeature(img);
+                // Write the features to the CSV file
+                int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
+                if (error) {
+                    std::cerr << "Error: cannot append to the csv file" << std::endl;
+                    return EXIT_FAILURE;
+                }
+            } else if (method == "face") {
+                std::vector<float> feature = extractFaceFeatures(img);
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
                 if (error) {

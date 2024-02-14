@@ -18,13 +18,13 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 find_package(OpenCV REQUIRED)
 
 # Add the first executable that uses extractFeature2csv.cpp and other necessary source files
-add_executable(extractFeature ./src/extractFeature2csv.cpp ./src/matchings.cpp ./src/csv_util.cpp)
+add_executable(extractFeature ./src/extractFeature2csv.cpp ./src/matchings.cpp ./src/csv_util.cpp ./src/faceDetect.cpp)
 
 # Link OpenCV libraries
 target_link_libraries(extractFeature ${OpenCV_LIBS})
 
 # Add the second executable that uses matchings.cpp and other necessary source files
-add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_util.cpp)
+add_executable(matching ./src/matchings.cpp ./src/csv2matching.cpp ./src/csv_util.cpp ./src/faceDetect.cpp)
 
 # Link OpenCV libraries with the second executable
 target_link_libraries(matching ${OpenCV_LIBS})
@@ -34,6 +34,12 @@ add_executable(dnn_embedding ./src/dnn_embedding.cpp ./src/matchings.cpp ./src/c
 
 # Link OpenCV libraries with the third executable
 target_link_libraries(dnn_embedding ${OpenCV_LIBS})
+
+# Add the fourth executable that uses faceDetect.cpp and other necessary source files
+add_executable(faceDetecting ./src/faceDetecting.cpp)
+
+# Link OpenCV libraries with the fourth executable
+target_link_libraries(faceDetecting ${OpenCV_LIBS})
 
 # Ensure the OpenCV include directories are available to all targets
 include_directories(${OpenCV_INCLUDE_DIRS})

@@ -69,7 +69,9 @@ std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int a
 std::vector<float> calculateLawsTextureFeatures(const cv::Mat& src);
 // EXTENSION: Gabor texture features
 std::vector<float> computeGaborFeatures(const cv::Mat& img);
-
+// EXTENSION: face detection and feature extraction
+// Define a function to extract face features
+std::vector<float> extractFaceFeatures(cv::Mat& img);
 
 
 

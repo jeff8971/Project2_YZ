@@ -12,7 +12,7 @@
 #include <cstdlib>
 #include <opencv2/opencv.hpp>
 #include "faceDetect.h"
-
+#include "csv_util.h"
 
 /*
   Arguments:
@@ -86,3 +86,34 @@ int drawBoxes( cv::Mat &frame, std::vector<cv::Rect> &faces, int minWidth, float
 
   return(0);
 }
+
+
+// EXTENSION: face detection and feature extraction
+// Define a function to extract face features
+std::vector<float> extractFaceFeatures(cv::Mat& img) {
+    cv::Mat gray;
+    std::vector<cv::Rect> faces;
+    std::vector<float> features;
+
+    // Convert to grayscale
+    if (img.channels() > 1) {
+        cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = img;
+    }
+
+    // Detect faces
+    detectFaces(gray, faces);
+
+    // For simplicity, use face rectangle (x, y, width, height) as features
+    for (auto& face : faces) {
+        features.push_back(static_cast<float>(face.x));
+        features.push_back(static_cast<float>(face.y));
+        features.push_back(static_cast<float>(face.width));
+        features.push_back(static_cast<float>(face.height));
+    }
+
+    return features;
+}
+
+

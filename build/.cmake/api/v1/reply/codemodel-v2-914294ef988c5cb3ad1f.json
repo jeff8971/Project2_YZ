@@ -17,7 +17,8 @@
 					[
 						0,
 						1,
-						2
+						2,
+						3
 					]
 				}
 			],
@@ -34,7 +35,8 @@
 					[
 						0,
 						1,
-						2
+						2,
+						3
 					]
 				}
 			],
@@ -43,21 +45,28 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "dnn_embedding::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-dnn_embedding-Debug-282c8e35f29928b64939.json",
+					"jsonFile" : "target-dnn_embedding-Debug-943689b4fdb792af5297.json",
 					"name" : "dnn_embedding",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "extractFeature::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-extractFeature-Debug-df328d91cd9c8b34f2f2.json",
+					"jsonFile" : "target-extractFeature-Debug-83726675ceea37b0c762.json",
 					"name" : "extractFeature",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
+					"id" : "faceDetecting::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-faceDetecting-Debug-2a5d6e4c7f7ddfb86c0c.json",
+					"name" : "faceDetecting",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "matching::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-matching-Debug-d2f27c6e3c0a0600b90d.json",
+					"jsonFile" : "target-matching-Debug-b51c89a465f9ca4bde3e.json",
 					"name" : "matching",
 					"projectIndex" : 0
 				}

@@ -50,7 +50,8 @@ int main(int argc, char* argv[]) {
     && method != "glcm"
     && method != "l"
     && method != "gabor"
-    && method != "custom") {
+    && method != "custom"
+    && method != "face") {
         std::cerr << "Error: invalid method" << std::endl;
         matchingMenu();
         return EXIT_FAILURE;
@@ -197,10 +198,15 @@ int main(int argc, char* argv[]) {
             float distance = computeSSD(target_features, data[i]);
             similarities.emplace_back(distance, std::string(filenames[i]));
         }
-    } else {
+    } else if (method == "face"){
+        printf("face detect done.\n");
+    }
+    else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }
+
+
 
     // Clean up dynamically allocated filenames
     for (char* fname : filenames) {

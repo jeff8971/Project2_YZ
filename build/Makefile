@@ -155,6 +155,19 @@ dnn_embedding/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/dnn_embedding.dir/build.make CMakeFiles/dnn_embedding.dir/build
 .PHONY : dnn_embedding/fast
 
+#=============================================================================
+# Target rules for targets named faceDetecting
+
+# Build rule for target.
+faceDetecting: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 faceDetecting
+.PHONY : faceDetecting
+
+# fast build rule for target.
+faceDetecting/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/faceDetecting.dir/build.make CMakeFiles/faceDetecting.dir/build
+.PHONY : faceDetecting/fast
+
 src/csv2matching.o: src/csv2matching.cpp.o
 .PHONY : src/csv2matching.o
 
@@ -257,6 +270,57 @@ src/extractFeature2csv.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.s
 .PHONY : src/extractFeature2csv.cpp.s
 
+src/faceDetect.o: src/faceDetect.cpp.o
+.PHONY : src/faceDetect.o
+
+# target to build an object file
+src/faceDetect.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/faceDetect.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/faceDetect.cpp.o
+.PHONY : src/faceDetect.cpp.o
+
+src/faceDetect.i: src/faceDetect.cpp.i
+.PHONY : src/faceDetect.i
+
+# target to preprocess a source file
+src/faceDetect.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/faceDetect.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/faceDetect.cpp.i
+.PHONY : src/faceDetect.cpp.i
+
+src/faceDetect.s: src/faceDetect.cpp.s
+.PHONY : src/faceDetect.s
+
+# target to generate assembly for a file
+src/faceDetect.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/extractFeature.dir/build.make CMakeFiles/extractFeature.dir/src/faceDetect.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/matching.dir/build.make CMakeFiles/matching.dir/src/faceDetect.cpp.s
+.PHONY : src/faceDetect.cpp.s
+
+src/faceDetecting.o: src/faceDetecting.cpp.o
+.PHONY : src/faceDetecting.o
+
+# target to build an object file
+src/faceDetecting.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/faceDetecting.dir/build.make CMakeFiles/faceDetecting.dir/src/faceDetecting.cpp.o
+.PHONY : src/faceDetecting.cpp.o
+
+src/faceDetecting.i: src/faceDetecting.cpp.i
+.PHONY : src/faceDetecting.i
+
+# target to preprocess a source file
+src/faceDetecting.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/faceDetecting.dir/build.make CMakeFiles/faceDetecting.dir/src/faceDetecting.cpp.i
+.PHONY : src/faceDetecting.cpp.i
+
+src/faceDetecting.s: src/faceDetecting.cpp.s
+.PHONY : src/faceDetecting.s
+
+# target to generate assembly for a file
+src/faceDetecting.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/faceDetecting.dir/build.make CMakeFiles/faceDetecting.dir/src/faceDetecting.cpp.s
+.PHONY : src/faceDetecting.cpp.s
+
 src/matchings.o: src/matchings.cpp.o
 .PHONY : src/matchings.o
 
@@ -297,6 +361,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... dnn_embedding"
 	@echo "... extractFeature"
+	@echo "... faceDetecting"
 	@echo "... matching"
 	@echo "... src/csv2matching.o"
 	@echo "... src/csv2matching.i"
@@ -310,6 +375,12 @@ help:
 	@echo "... src/extractFeature2csv.o"
 	@echo "... src/extractFeature2csv.i"
 	@echo "... src/extractFeature2csv.s"
+	@echo "... src/faceDetect.o"
+	@echo "... src/faceDetect.i"
+	@echo "... src/faceDetect.s"
+	@echo "... src/faceDetecting.o"
+	@echo "... src/faceDetecting.i"
+	@echo "... src/faceDetecting.s"
 	@echo "... src/matchings.o"
 	@echo "... src/matchings.i"
 	@echo "... src/matchings.s"

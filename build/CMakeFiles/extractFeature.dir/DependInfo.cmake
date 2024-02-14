@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/jeff/Desktop/Project2_YZ/src/csv_util.cpp" "CMakeFiles/extractFeature.dir/src/csv_util.cpp.o" "gcc" "CMakeFiles/extractFeature.dir/src/csv_util.cpp.o.d"
   "/Users/jeff/Desktop/Project2_YZ/src/extractFeature2csv.cpp" "CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.o" "gcc" "CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.o.d"
+  "/Users/jeff/Desktop/Project2_YZ/src/faceDetect.cpp" "CMakeFiles/extractFeature.dir/src/faceDetect.cpp.o" "gcc" "CMakeFiles/extractFeature.dir/src/faceDetect.cpp.o.d"
   "/Users/jeff/Desktop/Project2_YZ/src/matchings.cpp" "CMakeFiles/extractFeature.dir/src/matchings.cpp.o" "gcc" "CMakeFiles/extractFeature.dir/src/matchings.cpp.o.d"
   )
 

@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/jeff/Desktop/Project2_YZ/src/csv2matching.cpp" "CMakeFiles/matching.dir/src/csv2matching.cpp.o" "gcc" "CMakeFiles/matching.dir/src/csv2matching.cpp.o.d"
   "/Users/jeff/Desktop/Project2_YZ/src/csv_util.cpp" "CMakeFiles/matching.dir/src/csv_util.cpp.o" "gcc" "CMakeFiles/matching.dir/src/csv_util.cpp.o.d"
+  "/Users/jeff/Desktop/Project2_YZ/src/faceDetect.cpp" "CMakeFiles/matching.dir/src/faceDetect.cpp.o" "gcc" "CMakeFiles/matching.dir/src/faceDetect.cpp.o.d"
   "/Users/jeff/Desktop/Project2_YZ/src/matchings.cpp" "CMakeFiles/matching.dir/src/matchings.cpp.o" "gcc" "CMakeFiles/matching.dir/src/matchings.cpp.o.d"
   )
 

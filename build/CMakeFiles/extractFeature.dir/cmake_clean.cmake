@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/extractFeature.dir/src/csv_util.cpp.o.d"
   "CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.o"
   "CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.o.d"
+  "CMakeFiles/extractFeature.dir/src/faceDetect.cpp.o"
+  "CMakeFiles/extractFeature.dir/src/faceDetect.cpp.o.d"
   "CMakeFiles/extractFeature.dir/src/matchings.cpp.o"
   "CMakeFiles/extractFeature.dir/src/matchings.cpp.o.d"
 )

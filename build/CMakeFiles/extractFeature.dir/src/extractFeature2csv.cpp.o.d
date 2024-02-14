@@ -917,4 +917,5 @@ CMakeFiles/extractFeature.dir/src/extractFeature2csv.cpp.o: \
   /usr/local/Cellar/opencv/4.9.0_1/include/opencv4/opencv2/video/tracking.hpp \
   /usr/local/Cellar/opencv/4.9.0_1/include/opencv4/opencv2/video/background_segm.hpp \
   /Users/jeff/Desktop/Project2_YZ/include/matchings.h \
-  /Users/jeff/Desktop/Project2_YZ/include/csv_util.h
+  /Users/jeff/Desktop/Project2_YZ/include/csv_util.h \
+  /Users/jeff/Desktop/Project2_YZ/include/faceDetect.h
