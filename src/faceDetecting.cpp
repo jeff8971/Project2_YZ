@@ -13,12 +13,11 @@
 #include <vector>
 #include <string>
 
-
-
-// Function to read a CSV file and print filenames and their data
-void printImagesWithData(const std::string& csvFilePath) {
+// Function to read a CSV file, print filenames with data, and count them
+void printAndCountImagesWithData(const std::string& csvFilePath) {
     std::ifstream file(csvFilePath);
     std::string line;
+    int faceCount = 0; // Initialize face counter
 
     // Check if the file is open
     if (!file.is_open()) {
@@ -45,17 +44,21 @@ void printImagesWithData(const std::string& csvFilePath) {
             }
         }
 
-        // Print the filename if it has associated data
+        // Print the filename if it has associated data and increment counter
         if (hasData) {
             std::cout << filename << " has face feature" << std::endl;
+            faceCount++; // Increment face counter
         }
     }
+
+    // Print the total number of faces detected
+    std::cout << "Total faces detected: " << faceCount << std::endl;
 
     file.close();
 }
 
 int main() {
     const char* csvFilePath = "/Users/jeff/Desktop/Project2_YZ/bin/image_features_face.csv"; // Update this with the actual path to your CSV file
-    printImagesWithData(csvFilePath);
+    printAndCountImagesWithData(csvFilePath);
     return 0;
 }
