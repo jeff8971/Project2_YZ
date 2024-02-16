@@ -29,7 +29,9 @@ void extractMenu(){
     printf("  glcm: use the GLCM filter to extract the feature\n");
     printf("  l: use the Laws' Histogram to extract the feature\n");
     printf("  gabor: use the Gabor Histogram to extract the feature\n");
-    printf("  custom: use the custom method to extract the feature\n");
+    printf("  custom_s: use the custom_s method to extract the feature for small object\n");
+    printf("  custom_m: use the custom method to extract the feature for medium object\n");
+    printf("  custom_l: use the custom method to extract the feature for large object\n");
     printf("  face: use the face detection method to extract the feature\n");
 }
 
@@ -50,7 +52,9 @@ int main(int argc, char* argv[]){
     && method != "glcm"
     && method != "l"
     && method != "gabor"
-    && method != "custom"
+    && method != "custom_s"
+    && method != "custom_m"
+    && method != "custom_l"
     && method != "face") {
         std::cerr << "Error: invalid method" << std::endl;
         extractMenu();
@@ -78,8 +82,12 @@ int main(int argc, char* argv[]){
         csvFile += "laws.csv";
     } else if (method == "gabor"){
         csvFile += "gabor.csv";
-    } else if (method == "custom") {
-        csvFile += "custom.csv";
+    } else if (method == "custom_s") {
+        csvFile += "custom_s.csv";
+    } else if (method == "custom_m") {
+        csvFile += "custom_m.csv";
+    } else if (method == "custom_l") {
+        csvFile += "custom_l.csv";
     } else if (method == "face") {
         csvFile += "face.csv";
     } else {
@@ -192,8 +200,24 @@ int main(int argc, char* argv[]){
                     std::cerr << "Error: cannot append to the csv file" << std::endl;
                     return EXIT_FAILURE;
                 }
-            } else if (method == "custom") {
-                std::vector<float> feature = calculateCustomFeature(img);
+            } else if (method == "custom_s") {
+                std::vector<float> feature = calculateCustomFeature(img, BINS_3D, WEIGHT_CONFIG_S);
+                // Write the features to the CSV file
+                int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
+                if (error) {
+                    std::cerr << "Error: cannot append to the csv file" << std::endl;
+                    return EXIT_FAILURE;
+                }
+            } else if (method == "custom_m") {
+                std::vector<float> feature = calculateCustomFeature(img, BINS_3D, WEIGHT_CONFIG_M);
+                // Write the features to the CSV file
+                int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
+                if (error) {
+                    std::cerr << "Error: cannot append to the csv file" << std::endl;
+                    return EXIT_FAILURE;
+                }
+            } else if (method == "custom_l") {
+                std::vector<float> feature = calculateCustomFeature(img, BINS_3D, WEIGHT_CONFIG_L);
                 // Write the features to the CSV file
                 int error = append_image_data_csv(const_cast<char*>(csvFile.c_str()), const_cast<char*>(file_name.c_str()), feature, false);
                 if (error) {

@@ -18,6 +18,10 @@
 #define GLCM_ANGLE 0
 #define GLCM_LEVELS 256
 
+const std::vector<int> WEIGHT_CONFIG_S = {1, 2, 4, 8};
+const std::vector<int> WEIGHT_CONFIG_M = {1, 2, 8, 4};
+const std::vector<int> WEIGHT_CONFIG_L = {1, 8, 4, 2};
+
 
 // Task 1: baseline matching
 // Function to extract 7x7 feature vector from an image
@@ -60,8 +64,12 @@ float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vecto
 
 // Task 7: Custom Design
 // Calculate the custom feature vector from an image
-// Use a combination of Gabor features, Laws, GLCM, and 7x7 center feature.
-std::vector<float> calculateCustomFeature(const cv::Mat& img);
+// Function to calculate gradient magnitude histogram
+std::vector<float> calculateGradientMagnitudeHistogram(const cv::Mat& image, int bins);
+
+std::vector<float> calculateCustomFeature(const cv::Mat& image, int bins, const std::vector<int>& weightConfig);
+
+
 
 // EXTENSION: GLCM texture features
 std::vector<float> calculateGLCMFeatures(const cv::Mat& src, int distance, int angle, int levels);

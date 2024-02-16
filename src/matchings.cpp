@@ -325,31 +325,52 @@ float calculateCosineSimilarity(const std::vector<float>& vec1, const std::vecto
 
 // Task 7: Custom Design
 // Calculate the custom feature vector from an image
-// Use a combination of Gabor features, edge histogram, Laws' texture features, and color texture features
-std::vector<float> calculateCustomFeature(const cv::Mat& img) {
-    // Convert the image to grayscale for certain feature calculations
-    cv::Mat grayImg;
-    if (img.channels() > 1) {
-        cv::cvtColor(img, grayImg, cv::COLOR_BGR2GRAY);
-    } else {
-        grayImg = img.clone();
+// Function to calculate gradient magnitude histogram
+std::vector<float> calculateGradientMagnitudeHistogram(const cv::Mat& image, int bins) {
+    cv::Mat gray, grad_x, grad_y, grad;
+    cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+    cv::Sobel(gray, grad_x, CV_32F, 1, 0);
+    cv::Sobel(gray, grad_y, CV_32F, 0, 1);
+    cv::magnitude(grad_x, grad_y, grad);
+    std::vector<float> histogram(bins, 0.0f);
+    float range[] = {0, 256};
+    const float* ranges[] = {range};
+    cv::calcHist(&grad, 1, 0, cv::Mat(), histogram, 1, &bins, ranges, true, false);
+    cv::normalize(histogram, histogram, 1, 0, cv::NORM_L1);
+    return histogram;
+}
+
+// Function to calculate custom feature for different sizes of object to be recognized 
+std::vector<float> calculateCustomFeature(const cv::Mat& image, int bins, const std::vector<int>& weightConfig) {
+    std::vector<float> finalFeatureVector;
+    // Use the passed weight configuration
+    std::vector<int> weights = weightConfig; // Configurable weights for whole, half, quarter, and eighth sizes
+    std::vector<float> scales = {1.0, 0.5, 0.25, 0.125}; // Corresponding scales
+
+    for (size_t i = 0; i < scales.size(); i++) {
+        float scale = scales[i];
+        int scaledWidth = static_cast<int>(image.cols * scale);
+        int scaledHeight = static_cast<int>(image.rows * scale);
+        cv::Rect roi((image.cols - scaledWidth) / 2, (image.rows - scaledHeight) / 2, scaledWidth, scaledHeight);
+        cv::Mat scaledImage = image(roi);
+
+        // Calculate and weight RGB histogram
+        std::vector<float> rgbHistogram = calculateRGB_3DChromaHistogram(scaledImage, bins);
+        std::transform(rgbHistogram.begin(), rgbHistogram.end(), rgbHistogram.begin(), 
+                       [&weights, i](float val) { return val * weights[i]; });
+        finalFeatureVector.insert(finalFeatureVector.end(), rgbHistogram.begin(), rgbHistogram.end());
+
+        // Calculate and weight Gradient Magnitude histogram
+        std::vector<float> gradHistogram = calculateGradientMagnitudeHistogram(scaledImage, bins);
+        std::transform(gradHistogram.begin(), gradHistogram.end(), gradHistogram.begin(), 
+                       [&weights, i](float val) { return val * weights[i]; });
+        finalFeatureVector.insert(finalFeatureVector.end(), gradHistogram.begin(), gradHistogram.end());
     }
 
-    // Calculate features using the specified methods
-    std::vector<float> gaborFeatures = computeGaborFeatures(grayImg);
-    std::vector<float> lawsFeatures = calculateLawsTextureFeatures(grayImg);
-    std::vector<float> centralPatchFeatures = extract7x7FeatureVector(img);
-    std::vector<float> glcmFeatures = calculateGLCMFeatures(grayImg, GLCM_DISTANCE, GLCM_ANGLE, GLCM_LEVELS); 
-
-    // Combine all features into a single vector
-    std::vector<float> combinedFeatures;
-    combinedFeatures.insert(combinedFeatures.end(), gaborFeatures.begin(), gaborFeatures.end());
-    combinedFeatures.insert(combinedFeatures.end(), lawsFeatures.begin(), lawsFeatures.end());
-    combinedFeatures.insert(combinedFeatures.end(), centralPatchFeatures.begin(), centralPatchFeatures.end());
-    combinedFeatures.insert(combinedFeatures.end(), glcmFeatures.begin(), glcmFeatures.end());
-
-    return combinedFeatures;
+    return finalFeatureVector;
 }
+
+
 
 
 /************************************************************************************************

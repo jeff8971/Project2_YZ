@@ -30,7 +30,9 @@ void matchingMenu(){
     printf("  glcm: use the GLCM filter to matching\n");
     printf("  l: use the Laws' filter to matching\n");
     printf("  gabor: use the Gabor filter to matching\n");
-    printf("  custom: use the custom method to matching\n");
+    printf("  custom_s: use the custom_s method to matching the small object\n");
+    printf("  custom_m: use the custom_m method to matching the medium object\n");
+    printf("  custom_l: use the custom_l method to matching the large object\n");
 }
 
 
@@ -50,7 +52,9 @@ int main(int argc, char* argv[]) {
     && method != "glcm"
     && method != "l"
     && method != "gabor"
-    && method != "custom"
+    && method != "custom_s"
+    && method != "custom_m"
+    && method != "custom_l"
     && method != "face") {
         std::cerr << "Error: invalid method" << std::endl;
         matchingMenu();
@@ -91,10 +95,13 @@ int main(int argc, char* argv[]) {
         methodFullname = "laws";
     } else if (method == "gabor"){
         methodFullname = "gabor";
-    } else if (method == "custom") {
-        methodFullname = "custom";
-    } 
-    else {
+    } else if (method == "custom_s") {
+        methodFullname = "custom_s";
+    } else if (method == "custom_m") {
+        methodFullname = "custom_m";
+    } else if (method == "custom_l") {
+        methodFullname = "custom_l";
+    } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }
@@ -142,8 +149,12 @@ int main(int argc, char* argv[]) {
         target_features = calculateLawsTextureFeatures(target_image);
     } else if (method == "gabor"){
         target_features = computeGaborFeatures(target_image);
-    } else if (method == "custom") {
-        target_features = calculateCustomFeature(target_image);
+    } else if (method == "custom_s") {
+        target_features = calculateCustomFeature(target_image, BINS_3D, WEIGHT_CONFIG_S);
+    } else if (method == "custom_m") {
+        target_features = calculateCustomFeature(target_image, BINS_3D, WEIGHT_CONFIG_M);
+    } else if (method == "custom_l") {
+        target_features = calculateCustomFeature(target_image, BINS_3D, WEIGHT_CONFIG_L);
     } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
@@ -193,27 +204,34 @@ int main(int argc, char* argv[]) {
             float distance = computeSSD(target_features, data[i]);
             similarities.emplace_back(distance, std::string(filenames[i]));
         }
-    } else if (method == "custom") {
+    } else if (method == "custom_s") {
         for (size_t i = 0; i < data.size(); i++) {
-            float distance = computeSSD(target_features, data[i]);
+            float distance = computeHistogramIntersection(target_features, data[i]);
+            similarities.emplace_back(distance, std::string(filenames[i]));
+        }
+    } else if (method == "custom_m") {
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = computeHistogramIntersection(target_features, data[i]);
+            similarities.emplace_back(distance, std::string(filenames[i]));
+        }
+    } else if (method == "custom_l") {
+        for (size_t i = 0; i < data.size(); i++) {
+            float distance = computeHistogramIntersection(target_features, data[i]);
             similarities.emplace_back(distance, std::string(filenames[i]));
         }
     } else if (method == "face"){
         printf("face detect done.\n");
-    }
-    else {
+    } else {
         std::cerr << "Error: invalid method" << std::endl;
         return EXIT_FAILURE;
     }
-
-
 
     // Clean up dynamically allocated filenames
     for (char* fname : filenames) {
         delete[] fname;
     }
     // by using histogram intersection, the higher the value, the more similar the images are
-    if (method == "h2" || method == "h3" || method == "m" || method == "tc") {
+    if (method == "h2" || method == "h3" || method == "m" || method == "tc" || method == "custom_s" || method == "custom_m" || method == "custom_l") {
         // Sort in descending order for histogram intersection
         std::sort(similarities.begin(), similarities.end(), [](const std::pair<float, std::string>& a, const std::pair<float, std::string>& b) {
             return a.first > b.first; // For higher intersection values
