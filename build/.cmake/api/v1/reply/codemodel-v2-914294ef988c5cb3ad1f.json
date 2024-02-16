@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project2_YZ",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "dnn_embedding::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-dnn_embedding-Debug-943689b4fdb792af5297.json",
+					"name" : "dnn_embedding",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "extractFeature::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-extractFeature-Debug-83726675ceea37b0c762.json",
+					"name" : "extractFeature",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "faceDetecting::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-faceDetecting-Debug-2a5d6e4c7f7ddfb86c0c.json",
+					"name" : "faceDetecting",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "matching::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-matching-Debug-b51c89a465f9ca4bde3e.json",
+					"name" : "matching",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/jeff/Desktop/Project2_YZ/build",
+		"source" : "/Users/jeff/Desktop/Project2_YZ"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
